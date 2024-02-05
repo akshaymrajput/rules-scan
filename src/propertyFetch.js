@@ -16,8 +16,6 @@ const getPropName = (propSelector, propDetails) => {
   for (let property of properties) {
     let name;
 
-    console.log(property);
-
     let firstResult =
       jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
       jQuery(property).attr(propDetails.attr) ||
