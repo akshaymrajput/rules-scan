@@ -419,47 +419,110 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [
+        '.product-details .swatches [option-name]:has(.swatch-button)',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `.product-details .swatches [option-name]:first`,
+        attr: `option-name`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').length > 0) {
+        [
+          jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button.swatch-selected')
+            .length > 0
+            ? jQuery(
+                '.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button.swatch-selected'
+              ).attr("data-value")
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').map(function (
+              i,
+              e
+            ) {
+              return jQuery(e).attr("data-value");
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').length > 0 &&
+        ($sarg != "Choose REPLACE_ME") & ($sarg != "No REPLACE_ME")
+      ) {
+        jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').each(function (
+          i,
+          e
+        ) {
+          if (jQuery(this).attr("data-value").trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });      
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery('.product-details .swatches [option-name="REPLACE_ME"] li .swatch-button').each(function () {
+          if (
+            jQuery(this).attr("data-value").trim() == $sarg &&
+            !jQuery(this).parent().hasClass("swatch-item-unavailable")
+          ) {
+            $val = false;
+          }
+        });
+      }
+      $val;         
+      `,
+    },
+  },
 ];
 
 
 /*
-if (
-  jQuery(
-    '.product-detail .option-selector__btns input[name$="colore-selector"]'
-  ).length > 0
-) {
+if (jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').length > 0) {
   [
-    jQuery(
-      '.product-detail .option-selector__btns input[name$="colore-selector"]:checked'
-    ).length > 0
+    jQuery('.product-details .swatches [option-name="Size"] li .swatch-button.swatch-selected')
+      .length > 0
       ? jQuery(
-          '.product-detail .option-selector__btns input[name$="colore-selector"]:checked'
-        )
-          .val()
-          .trim()
-      : "Select Color",
+          '.product-details .swatches [option-name="Size"] li .swatch-button.swatch-selected'
+        ).attr("data-value")
+      : "Select Size",
     jQuery.makeArray(
-      jQuery(
-        '.product-detail .option-selector__btns input[name$="colore-selector"]'
-      ).map(function (i, e) {
-        return jQuery(e).val().trim();
+      jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').map(function (
+        i,
+        e
+      ) {
+        return jQuery(e).attr("data-value");
       })
     ),
   ];
-} else ["No Color", ["No Color"]];
+} else ["No Size", ["No Size"]];
 
-// $sarg = 'Malva'
+// $sarg='XL'
 if (
-  jQuery(
-    '.product-detail .option-selector__btns input[name$="colore-selector"]'
-  ).length > 0 &&
-  $sarg != "Select Color" &&
-  $sarg != "No Color"
+  jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').length > 0 &&
+  ($sarg != "Choose Size") & ($sarg != "No Size")
 ) {
-  jQuery(
-    '.product-detail .option-selector__btns input[name$="colore-selector"]'
-  ).each(function () {
-    if (jQuery(this).val().trim() == $sarg) {
+  jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').each(function (
+    i,
+    e
+  ) {
+    if (jQuery(this).attr("data-value").trim() == $sarg) {
       jQuery(this)[0]?.click();
     }
   });
@@ -468,24 +531,20 @@ wait_for(function () {
   return true;
 });
 
+// $sarg = 'S'
 $val = false;
 if (
-  jQuery(
-    '.product-detail .option-selector__btns input[name$="colore-selector"]'
-  ).length > 0 &&
-  $sarg != "Select Color" &&
-  $sarg != "No Color"
+  jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').length > 0 &&
+  $sarg != "No Size" &&
+  $sarg != "Select Size"
 ) {
-  jQuery(
-    '.product-detail .option-selector__btns input[name$="colore-selector"]'
-  ).each(function () {
+  $val = true;
+  jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').each(function () {
     if (
-      jQuery(this).val().trim() == $sarg &&
-      (jQuery(this).is(":disabled") ||
-        jQuery(this).hasClass("unavailable") ||
-        jQuery(this).hasClass("disabled"))
+      jQuery(this).attr("data-value").trim() == $sarg &&
+      !jQuery(this).parent().hasClass("swatch-item-unavailable")
     ) {
-      $val = true;
+      $val = false;
     }
   });
 }

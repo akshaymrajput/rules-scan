@@ -6865,4 +6865,70 @@ module.exports = [
           `,
     },
   },
+  {
+    conditions: {
+      titleElement: [".product-details h1:first"],
+      galleryItems: [
+        ".prod-featured-image img[src]",
+      ],
+      priceElements: [
+        ".product-details [data-price-wrapper] [data-product-price]",
+      ],
+      addButton: [".product-details button[data-add-to-cart]"],
+    },
+    data: {
+      productTitle: `
+      jQuery(".product-details h1:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery('.prod-featured-image img[src]').attr("src") ||
+        jQuery('meta[property="og:image:secure_url"]').attr("content") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (jQuery('.product-additional-image a[data-fancybox="gallery"]').length > 0) {
+        $arr = [];
+        jQuery('.product-additional-image a[data-fancybox="gallery"]').each(function (index) {
+          $img = jQuery(this).attr("href") || 
+                 jQuery(this).find("img").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }      
+          `,
+      productPrice: `
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+
+      $pr = jQuery('.product-details [data-price-wrapper] [data-product-price]').text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      productOriginalPrice: `
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+
+      $pr = jQuery('.product-details [data-price-wrapper] [data-compare-price]').text().trim() || 
+            jQuery('.product-details [data-price-wrapper] [data-product-price]').text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;    
+          `,
+      stockStatus: `
+      jQuery('.product-details button[data-add-to-cart]').is(":disabled") ||
+        jQuery('.template-404:visible').length > 0;
+          `,
+    },
+  },
 ];

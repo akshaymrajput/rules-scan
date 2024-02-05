@@ -10,10 +10,27 @@ import scanForProperties from "../../propertyFetch";
 import CopyButton from "../CopyButton/CopyButton";
 import { TiArrowSortedDown } from "react-icons/ti";
 
+const copyButtonsConfig = [
+  { property: "productTitle", buttonText: "Product Title" },
+  { property: "description", buttonText: "Description" },
+  { property: "mainImage", buttonText: "Main Image" },
+  { property: "itemImages", buttonText: "Item Images" },
+  { property: "productPrice", buttonText: "Product Price" },
+  { property: "productOriginalPrice", buttonText: "Product Original Price" },
+  { property: "stockStatus", buttonText: "Stock Status" },
+];
+
+const propertiesCopyButtonsConfig = [
+  { property: "getter", buttonText: "Property Getter" },
+  { property: "setter", buttonText: "Property Setter" },
+  { property: "stockGetter", buttonText: "Property Stock Getter" },
+];
+
+
 const RulesHelperMain = () => {
   const data = scanForRules();
   const { propData } = scanForProperties();
-  const copyButtonsData = useCopyButtonsData(data);
+  const copyButtonsData = useCopyButtonsData(data, copyButtonsConfig);;
 
   console.log(propData);
 
@@ -57,10 +74,7 @@ const RulesHelperMain = () => {
   console.log(propData);
 
   const displayProperties = propData?.map((element, index) => {
-    const propertiesCopyButtonsData = usePropertiesCopyButtonsData(
-      propData,
-      index
-    );
+    const propertiesCopyButtonsData = usePropertiesCopyButtonsData(propData, index, propertiesCopyButtonsConfig);
     return (
       <div key={index} className="propertiesContainer">
         <div className="label">{element.name}</div>
