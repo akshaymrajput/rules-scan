@@ -3,58 +3,35 @@ import "./RulesHelperMain.css";
 import Button from "../Button/Button";
 import { IoMdClose } from "react-icons/io";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";
-import { useCopyButtonsData } from "../../hooks/useCopyButtonsData";
-import { usePropertiesCopyButtonsData } from "../../hooks/usePropertiesCopyButtonsData";
+import {
+  useCopyButtonsData,
+  usePropertiesCopyButtonsData,
+} from "../../hooks/useCopyButtonsData";
 import scanForRules from "../../fetch";
 import scanForProperties from "../../propertyFetch";
 import CopyButton from "../CopyButton/CopyButton";
 import { TiArrowSortedDown } from "react-icons/ti";
-
-const copyButtonsConfig = [
-  { property: "productTitle", buttonText: "Product Title" },
-  { property: "description", buttonText: "Description" },
-  { property: "mainImage", buttonText: "Main Image" },
-  { property: "itemImages", buttonText: "Item Images" },
-  { property: "productPrice", buttonText: "Product Price" },
-  { property: "productOriginalPrice", buttonText: "Product Original Price" },
-  { property: "stockStatus", buttonText: "Stock Status" },
-];
-
-const propertiesCopyButtonsConfig = [
-  { property: "getter", buttonText: "Property Getter" },
-  { property: "setter", buttonText: "Property Setter" },
-  { property: "stockGetter", buttonText: "Property Stock Getter" },
-];
-
+import { copyButtonsConfig, propertiesCopyButtonsConfig } from "../../utils";
 
 const RulesHelperMain = () => {
   const data = scanForRules();
   const { propData } = scanForProperties();
-  const copyButtonsData = useCopyButtonsData(data, copyButtonsConfig);;
-
-  console.log(propData);
+  const copyButtonsData = useCopyButtonsData(data, copyButtonsConfig);
 
   const [isHidden, setIsHidden] = useState(true);
 
   const [rulesTabOpen, setRulesTabOpen] = useState(true);
   const [propertiesTabOpen, setPropertiesTabOpen] = useState(false);
 
-  const handleCloseClick = () => {
-    setIsHidden(true);
+  const handleVisibilityToggle = (shouldHide) => {
+    setIsHidden(shouldHide);
   };
 
-  const handleOpenClick = () => {
-    setIsHidden(false);
-  };
-
-  const handleRulesClick = () => {
-    if (!rulesTabOpen) {
+  const handleTabClick = (tabName) => {
+    if (tabName === "rules" && !rulesTabOpen) {
       setRulesTabOpen(true);
       setPropertiesTabOpen(false);
-    }
-  };
-  const handlePropertiesClick = () => {
-    if (!propertiesTabOpen) {
+    } else if (tabName === "properties" && !propertiesTabOpen) {
       setPropertiesTabOpen(true);
       setRulesTabOpen(false);
     }
@@ -71,10 +48,12 @@ const RulesHelperMain = () => {
       </div>
     ))) || <div>No rules found</div>;
 
-  console.log(propData);
-
   const displayProperties = propData?.map((element, index) => {
-    const propertiesCopyButtonsData = usePropertiesCopyButtonsData(propData, index, propertiesCopyButtonsConfig);
+    const propertiesCopyButtonsData = usePropertiesCopyButtonsData(
+      propData,
+      index,
+      propertiesCopyButtonsConfig
+    );
     return (
       <div key={index} className="propertiesContainer">
         <div className="label">{element.name}</div>
@@ -106,7 +85,7 @@ const RulesHelperMain = () => {
                 width="max-content"
                 className="rulesButton"
                 title="Open Rules Tab"
-                onClick={handleRulesClick}
+                onClick={() => handleTabClick("rules")}
               >
                 Rules
               </Button>
@@ -117,7 +96,7 @@ const RulesHelperMain = () => {
                 width="max-content"
                 className="propertiesButton"
                 title="Open Properties Tab"
-                onClick={handlePropertiesClick}
+                onClick={() => handleTabClick("properties")}
               >
                 Properties
               </Button>
@@ -130,7 +109,7 @@ const RulesHelperMain = () => {
               width="max-content"
               className="rulesHelperCloseButton"
               title="Close Rules Helper Window"
-              onClick={handleCloseClick}
+              onClick={() => handleVisibilityToggle(true)}
             >
               <IoMdClose />
             </Button>
@@ -144,7 +123,10 @@ const RulesHelperMain = () => {
         id="rulesHelperOpenMain"
         style={{ display: isHidden ? "block" : "none" }}
       >
-        <Button className="rulesHelperOpenButton" onClick={handleOpenClick}>
+        <Button
+          className="rulesHelperOpenButton"
+          onClick={() => handleVisibilityToggle(false)}
+        >
           <FaRegFaceSmileBeam />
           <span>Rules Available</span>
         </Button>

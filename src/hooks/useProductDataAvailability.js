@@ -18,7 +18,8 @@ export const useProductDataAvailability = () => {
           receivedDataOfCurrentPage.productTitle.length > 0 &&
           receivedDataOfCurrentPage.productPrice.length > 0 &&
           receivedDataOfCurrentPage.mainImage) ||
-        receivedPropsDataOfCurrentPage && receivedPropsDataOfCurrentPage.propData
+        (receivedPropsDataOfCurrentPage &&
+          receivedPropsDataOfCurrentPage.propData)
       ) {
         productDataAvailable = true;
       }

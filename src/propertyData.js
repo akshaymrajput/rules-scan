@@ -422,7 +422,7 @@ module.exports = [
   {
     conditions: {
       propertySelector: [
-        '.product-details .swatches [option-name]:has(.swatch-button)',
+        ".product-details .swatches [option-name]:has(.swatch-button)",
       ],
     },
     data: {
@@ -467,7 +467,7 @@ module.exports = [
       }
       wait_for(function () {
         return true;
-      });      
+      });
       `,
       propStockGetter: `
       $val = false;
@@ -486,12 +486,11 @@ module.exports = [
           }
         });
       }
-      $val;         
+      $val;
       `,
     },
   },
 ];
-
 
 /*
 if (jQuery('.product-details .swatches [option-name="Size"] li .swatch-button').length > 0) {

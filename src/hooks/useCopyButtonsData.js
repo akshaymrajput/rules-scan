@@ -4,7 +4,7 @@ export const useCopyButtonsData = (data, config) => {
   const copyButtonsData = useMemo(
     () =>
       config.map((item) => ({
-        textToCopy: data[item.property],
+        textToCopy: data[item.textToCopy],
         buttonText: item.buttonText,
       })),
     [config, data]
@@ -17,7 +17,7 @@ export const usePropertiesCopyButtonsData = (propdata, index, config) => {
   const propertiesCopyButtonsData = useMemo(
     () =>
       config.map((item) => ({
-        textToCopy: propdata[index]?.[item.property],
+        textToCopy: propdata[index]?.[item.textToCopy],
         buttonText: item.buttonText,
       })),
     [config, propdata, index]
@@ -25,47 +25,3 @@ export const usePropertiesCopyButtonsData = (propdata, index, config) => {
 
   return propertiesCopyButtonsData;
 };
-
-
-/*
-import { useMemo } from "react";
-
-export const useCopyButtonsData = (data) => {
-  const copyButtonsData = useMemo(
-    () => [
-      {
-        textToCopy: data.productTitle,
-        buttonText: "Product Title",
-      },
-      {
-        textToCopy: data.description,
-        buttonText: "Description",
-      },
-      {
-        textToCopy: data.mainImage,
-        buttonText: "Main Image",
-      },
-      {
-        textToCopy: data.itemImages,
-        buttonText: "Item Images",
-      },
-      {
-        textToCopy: data.productPrice,
-        buttonText: "Product Price",
-      },
-      {
-        textToCopy: data.productOriginalPrice,
-        buttonText: "Product Original Price",
-      },
-      {
-        textToCopy: data.stockStatus,
-        buttonText: "Stock Status",
-      },
-    ],
-    [data]
-  );
-
-  return copyButtonsData;
-};
-
-*/

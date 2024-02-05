@@ -10,7 +10,13 @@ const ContentScript = () => {
   const isProductDataAvailable = useProductDataAvailability();
 
   useEffect(() => {
-    setIsDOMLoaded(true);
+    if (document.readyState === "complete") {
+      setIsDOMLoaded(true);
+    } else {
+      window.onload = () => {
+        setIsDOMLoaded(true);
+      };
+    }
   }, []);
 
   return (

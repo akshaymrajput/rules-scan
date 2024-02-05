@@ -15,7 +15,6 @@ const getPropName = (propSelector, propDetails) => {
 
   for (let property of properties) {
     let name;
-    console.log(property);
     let firstResult =
       jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
       jQuery(property).attr(propDetails.attr) ||
@@ -47,6 +46,7 @@ const getPropName = (propSelector, propDetails) => {
 };
 
 const scanForProperties = () => {
+  // let dataToSend = {};
   let dataToSend = {
     propData: null,
     propGetter: "",
@@ -76,7 +76,6 @@ const scanForProperties = () => {
       let stockGetter = data.propStockGetter;
 
       const currentPageProps = [];
-
       for (const propData of currentPropData) {
         const { name } = propData;
         const properties = {
@@ -87,8 +86,6 @@ const scanForProperties = () => {
         };
         currentPageProps.push(properties);
       }
-
-      console.log("currentPageProps -------------------->" + currentPageProps.getter);
 
       dataToSend = {
         ...dataToSend,
