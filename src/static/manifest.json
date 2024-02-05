@@ -1,0 +1,27 @@
+{
+  "name": "Rules Helper",
+  "description": "A simple helper which conditionally evaluates common product page patterns and returns jQuery code for that page.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_title": "Rules Helper",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["tabs", "activeTab", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": ["https://*/*"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}

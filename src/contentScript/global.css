@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;500;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"); */
+
+:root {
+  /* Rules Helper Window */
+
+  --bg-primary: #f8f8ff;
+  --bg-danger: #ff0000;
+  --border-outline: #d8b4e2;
+  --padding: 20px;
+  --border-radius: 5px;
+  --width: 300px;
+  --max-height: 500px;
+  --box-shadow: 0px 0px 5px rgba(216, 180, 226, 0.3);
+  --svg-transform-scale: scale(1.4);
+  --btn-container-width: 100%;
+  --color: #f8f8ff;
+  --dark-color: #000000;
+  --font-size: 16px;
+
+  /* Button */
+
+  --btn-min-height: 40px;
+  --btn-bg-color: #301934;
+  --btn-color: #f8f8ff;
+  --btn-border-radius: 3px;
+  --btn-hover-bg-color: #c699d1;
+}

@@ -1,0 +1,25 @@
+@import url(../../contentScript/global.css);
+
+#rulesHelperCustomButton.custom-button {
+  display: flex;
+  justify-content: space-between;
+  min-height: var(--btn-min-height);
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: var(--btn-bg-color);
+  color: var(--btn-color);
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: var(--btn-border-radius);
+  transition: background-color 0.3s ease;
+  font-size: var(--font-size);
+}
+
+#rulesHelperCustomButton.custom-button:hover {
+  background-color: var(--btn-hover-bg-color);
+}
+
+/* background-color: #d8b4e2; */
