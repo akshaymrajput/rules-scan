@@ -4,10 +4,11 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: var(--bg-primary);
-  font-family: "Montserrat", sans-serif !important;
+  background-color: var(--bg-dark);
+  font-family: "MuseoModerno", "Montserrat", sans-serif;
   font-weight: 500 !important;
   height: fit-content !important;
+
 }
 
 svg {
@@ -16,17 +17,34 @@ svg {
 
 #rules_popup {
   padding: 1rem;
-  width: 350px;
-  height: 500px;
+  width: 300px;
+  height: max-content;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  border: 2px solid whitesmoke;
+}
+
+#rules_popup header {
+  color: white;
+  font-size: var(--font-size);
+}
+
+#rules_popup #rulesHelperCustomButton {
+  background-color: #212121;
+  font-size: 12px;
+}
+
+#rules_popup #rulesHelperCustomButton:hover {
+  background-color: white;
+  border: 1px solid #212121;
+  color: #212121;
+  transition: all .25s ease-in-out;
 }
 
 section {
-  background: rgba(132, 0, 255, 0.2);
-  border-radius: var(--border-radius);
+  background: white;
   padding: 0.5rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
 }
@@ -43,6 +61,10 @@ section .title {
   margin-top: 0.5rem;
 }
 
+#properties-grid button {
+  padding: 0 5px;
+}
+
 .propertiesToggleBtn {
   margin-top: 0.5rem;
 }
@@ -52,9 +74,17 @@ section .title {
 }
 
 #tools-grid {
-  display: grid;
-  grid-template-columns: repeat(2, calc(50% - 0.5rem));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 0.5rem;
   place-content: space-between;
   margin-top: 0.5rem;
+}
+
+#tools-grid #rulesHelperCustomButton {
+  border-radius: 10px;
+  width: max-content !important;
+  gap: 6px;
+  flex: 1;
 }

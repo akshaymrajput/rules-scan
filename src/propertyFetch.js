@@ -16,9 +16,10 @@ const getPropName = (propSelector, propDetails) => {
   for (let property of properties) {
     let name;
     let firstResult =
-      jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
-      jQuery(property).attr(propDetails.attr) ||
-      jQuery(property).find(propDetails.name).text().trim();
+      propDetails.attr == "text" ? (jQuery(property).find(propDetails.name).clone().children().remove().end().text()?.replace(':','')?.trim() || jQuery(property).find(propDetails.name).text().trim()) :
+        jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
+        jQuery(property).attr(propDetails.attr) ||
+        jQuery(property).find(propDetails.name).text().trim();
 
     switch (propDetails.complexity) {
       case complexityType.SIMPLE:

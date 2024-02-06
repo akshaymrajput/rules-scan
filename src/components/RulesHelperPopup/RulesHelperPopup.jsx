@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import { FaAnglesDown, FaAnglesUp, FaRegCopy } from "react-icons/fa6";
 import CopyButton from "../CopyButton/CopyButton";
 
-import { coupons, skeleton } from "./popup_data";
+import { skeleton, propertiesSkeleton } from "./popup_data";
 
 const RulesHelperPopup = () => {
   const [showProperties, setShowProperties] = useState(false);
@@ -20,6 +20,9 @@ const RulesHelperPopup = () => {
 
   return (
     <div id="rules_popup">
+      <header>
+        <div>Static Reusable Data</div>
+      </header>
       <section>
         <h2 className="title">Rules</h2>
         <CopyButton
@@ -36,51 +39,69 @@ const RulesHelperPopup = () => {
         </Button>
         {showProperties ? (
           <div id="properties-grid">
-            <Button className="propertiesBtn">
-              select-option <FaRegCopy />
-            </Button>
-            <Button className="propertiesBtn">
-              ul-li <FaRegCopy />
-            </Button>
-            <Button className="propertiesBtn">
-              div-button/a/img <FaRegCopy />
-            </Button>
-            <Button className="propertiesBtn">
-              div-input <FaRegCopy />
-            </Button>
+            <CopyButton
+              className="propertiesBtn"
+              textToCopy={propertiesSkeleton.ul_li}
+              buttonText="ul_li"
+            ></CopyButton>
+            <CopyButton
+              className="propertiesBtn"
+              textToCopy={propertiesSkeleton.select_option}
+              buttonText="select_option"
+            ></CopyButton>
+            <CopyButton
+              className="propertiesBtn"
+              textToCopy={propertiesSkeleton.div_input}
+              buttonText="div_input"
+            ></CopyButton>
+            <CopyButton
+              className="propertiesBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
           </div>
         ) : null}
       </section>
       <section>
-        <h2 className="title">Tools</h2>
-        <Button className="propertiesToggleBtn" onClick={handleToolsClick}>
-          Select Tools
+        <h2 className="title">Misc</h2>
+        <Button className="miscToggleBtn" onClick={handleToolsClick}>
+          Misc
           {showTools ? <FaAnglesUp /> : <FaAnglesDown />}
         </Button>
         {showTools ? (
           <div id="tools-grid">
-            <Button className="toolsBtn">
-              select-option <FaRegCopy />
-            </Button>
-            <Button className="toolsBtn">
-              ul-li <FaRegCopy />
-            </Button>
-            <Button className="toolsBtn">
-              div-button/a/img <FaRegCopy />
-            </Button>
-            <Button className="toolsBtn">
-              div-input <FaRegCopy />
-            </Button>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeleton.div_button_a_img}
+              buttonText="div_button-a"
+            ></CopyButton>
           </div>
         ) : null}
-      </section>
-      <section>
-        <h2 className="title">Check for Coupons</h2>
-        <CopyButton
-          className="couponsCheckBtn"
-          textToCopy={skeleton.rules}
-          buttonText="Coupons Found!"
-        ></CopyButton>
       </section>
     </div>
   );
