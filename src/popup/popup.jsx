@@ -5,7 +5,7 @@ import RulesHelperPopup from "../components/RulesHelperPopup/RulesHelperPopup";
 
 const App = () => {
   return (
-    <div style={{all: "initial"}}>
+    <div id="popup" style={{ all: "initial" }}>
       <RulesHelperPopup />
     </div>
   );

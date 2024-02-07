@@ -564,7 +564,7 @@ module.exports = [
   {
     conditions: {
       propertySelector: [
-        '.productView-options .form-field[data-product-attribute]:has(.form-label):visible',
+        ".productView-options .form-field[data-product-attribute]:has(.form-label):visible",
       ],
     },
     data: {
@@ -650,53 +650,99 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [
+        '.product__page fieldset:has(input[name*="options["]:visible)',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `input[name*="options["]:visible`,
+        attr: `name`,
+        complexity: complexityType.INSIDE_SQ_BRACKETS,
+      },
+      propName: `.product__page input[name*="options["]:visible`,
+      propAttr: `name`,
+      propGetter: `
+      if (jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0) {
+        [
+          jQuery('.product__page input[name="options[REPLACE_ME]"]:checked').length > 0
+            ? jQuery('.product__page input[name="options[REPLACE_ME]"]:checked')
+                .attr("value")
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery('.product__page input[name="options[REPLACE_ME]"]').map(function (i, e) {
+              return jQuery(e).attr("value").trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];      
+      `,
+      propSetter: `
+      if (
+        jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
+        $sarg != "Choose REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function (i, e) {
+          if (jQuery(this).val().trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function () {
+          if (
+            jQuery(this).val().trim() == $sarg &&
+            !(jQuery(this).hasClass("sold-out") || jQuery(this).hasClass("disabled") || jQuery(this).is(":disabled"))
+          ) {
+            $val = false;
+          }
+        });
+      }
+      $val;
+      `,
+    },
+  },
 ];
 
 /*
-if (
-  jQuery(
-    ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-  ).length > 0
-) {
+if (jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0) {
   [
-    jQuery(
-      ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input:checked"
-    ).length > 0
-      ? jQuery(
-          ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input:checked"
-        )
-          .attr('aria-label')
-          ?.trim()|| jQuery(
-          ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input:checked"
-        )
-          .siblings('label')
-          .text()
-          ?.trim()
+    jQuery('.product__page input[name="options[REPLACE_ME]"]:checked').length > 0
+      ? jQuery('.product__page input[name="options[REPLACE_ME]"]:checked')
+          .attr("value")
+          .trim()
       : "Select REPLACE_ME",
     jQuery.makeArray(
-      jQuery(
-        ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-      ).map(function (i, e) {
-        return jQuery(e).attr('aria-label')?.trim()|| jQuery(
-          ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input:checked"
-        )
-          .siblings('label').text()?.trim();
+      jQuery('.product__page input[name="options[REPLACE_ME]"]').map(function (i, e) {
+        return jQuery(e).attr("value").trim();
       })
     ),
   ];
 } else ["No REPLACE_ME", ["No REPLACE_ME"]];
 
+// $sarg='Gold'
 if (
-  jQuery(
-    ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-  ).length > 0 &&
-  $sarg != "Select REPLACE_ME" &&
+  jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
+  $sarg != "Choose REPLACE_ME" &&
   $sarg != "No REPLACE_ME"
 ) {
-  jQuery(
-    ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-  ).each(function () {
-    if (jQuery(this).attr('aria-label')?.trim() || jQuery(this).siblings("label").text()?.trim() == $sarg) {
+  jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function (i, e) {
+    if (jQuery(this).val().trim() == $sarg) {
       jQuery(this)[0]?.click();
     }
   });
@@ -705,29 +751,22 @@ wait_for(function () {
   return true;
 });
 
+// $sarg = 'Gold'
 $val = false;
 if (
-  jQuery(
-    ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-  ).length > 0 &&
-  $sarg != "Select REPLACE_ME" &&
-  $sarg != "No REPLACE_ME"
+  jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
+  $sarg != "No REPLACE_ME" &&
+  $sarg != "Select REPLACE_ME"
 ) {
-  jQuery(
-    ".productView-options .form-label:contains(REPLACE_ME) ~ .form-option-wrapper input"
-  ).each(function () {
+  $val = true;
+  jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function () {
     if (
-      jQuery(this).attr('aria-label')?.trim() || jQuery(this).siblings("label").text()?.trim() == $sarg &&
-      (jQuery(this).is(":disabled") || 
-      jQuery(this).hasClass("disabled") || 
-      jQuery(this).siblings("label").hasClass("unavailable"))
+      jQuery(this).val().trim() == $sarg &&
+      !(jQuery(this).hasClass("sold-out") || jQuery(this).hasClass("disabled") || jQuery(this).is(":disabled"))
     ) {
-      $val = true;
+      $val = false;
     }
   });
 }
 $val;
-
-
-
 */

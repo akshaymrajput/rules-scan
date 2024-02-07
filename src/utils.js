@@ -1,11 +1,11 @@
-const complexityType = {
-  SIMPLE: "SIMPLE", // return the string as is
-  INSIDE_SQ_BRACKETS: "INSIDE_SQ_BRACKETS", // need to exec a function to get the string inside sq brackets
+const complexityType = Object.freeze({
+  SIMPLE: Symbol("SIMPLE"), // return the string as is
+  INSIDE_SQ_BRACKETS: Symbol("INSIDE_SQ_BRACKETS"), // need to exec a function to get the string inside sq brackets
   SPECIAL: {
-    Pattern_A: "name__",
-    Pattern_B: "ending_with_-selector",
+    Pattern_A: Symbol("prop name starts with name__"),
+    Pattern_B: Symbol("ending with -selector"),
   },
-};
+});
 
 const getNameUsingPatternA = (string) => {
   const match = string.match(/name__([^ ]+)/);

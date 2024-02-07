@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./RulesHelperMain.css";
 import Button from "../Button/Button";
 import { IoMdClose } from "react-icons/io";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";

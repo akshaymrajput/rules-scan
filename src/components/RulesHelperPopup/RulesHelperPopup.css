@@ -1,16 +1,5 @@
 @import url(../../contentScript/global.css);
 
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: var(--bg-dark);
-  font-family: "MuseoModerno", "Montserrat", sans-serif;
-  font-weight: 500 !important;
-  height: fit-content !important;
-
-}
-
 svg {
   transform: scale(1.2);
 }
@@ -40,7 +29,7 @@ svg {
   background-color: white;
   border: 1px solid #212121;
   color: #212121;
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 section {
