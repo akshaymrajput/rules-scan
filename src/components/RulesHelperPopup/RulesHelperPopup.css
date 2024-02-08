@@ -12,11 +12,11 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border: 2px solid whitesmoke;
+  border: 2px solid snow;
 }
 
 #rules_popup header {
-  color: white;
+  color: snow;
   font-size: var(--font-size);
 }
 
@@ -26,14 +26,14 @@ svg {
 }
 
 #rules_popup #rulesHelperCustomButton:hover {
-  background-color: white;
+  background: linear-gradient(to bottom right, lightgray, transparent);
   border: 1px solid #212121;
   color: #212121;
   transition: all 0.25s ease-in-out;
 }
 
 section {
-  background: white;
+  background: snow;
   padding: 0.5rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
 }

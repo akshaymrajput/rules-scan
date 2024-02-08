@@ -26,3 +26,13 @@
   --btn-border-radius: 3px;
   --btn-hover-bg-color: #c699d1;
 }
+
+body {
+  font-family: "MuseoModerno", sans-serif !important;
+  font-weight: 500 !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--bg-dark);
+  height: fit-content !important;
+}
