@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaRegCopy } from "react-icons/fa6";
 import Button from "../Button/Button";
 
-const CopyButton = ({ textToCopy, buttonText }) => {
+const CopyButton = ({ textToCopy, buttonText, showCopyIcon }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [copyError, setCopyError] = useState(false);
 
@@ -25,13 +25,14 @@ const CopyButton = ({ textToCopy, buttonText }) => {
         className="rulesHelperCopyButton"
         onClick={copyToClipboard}
         title={`Copy ${buttonText}`}
+        showCopyIcon={showCopyIcon}
       >
         {copySuccess ? (
           <span className="rulesHelperSuccess">Copied!</span>
         ) : (
           buttonText
         )}
-        <FaRegCopy />
+        {showCopyIcon ? <FaRegCopy /> : null}
       </Button>
       {copyError && (
         <span className="rulesHelperError">

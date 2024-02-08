@@ -96,9 +96,8 @@ const skeleton = {
   `,
 };
 
-const propertiesSkeleton = {
-  select_option: 
-  `
+const propertiesSkeletonData = {
+  select_option: `
   if (jQuery("select option").length > 0) {
     [
       jQuery("select option:selected")
@@ -148,8 +147,7 @@ const propertiesSkeleton = {
   }
   $val;  
   `,
-  ul_li: 
-  `
+  ul_li: `
   if (jQuery('ul li').length > 0) {
     [
       jQuery('ul li.selected').length > 0
@@ -192,8 +190,7 @@ const propertiesSkeleton = {
   }
   $val;
   `,
-  div_button_a_img: 
-  `
+  div_button_a_img: `
   if (jQuery('div button_a_img').length > 0) {
     [
       jQuery('div button_a_img.selected').length > 0
@@ -237,8 +234,7 @@ const propertiesSkeleton = {
   }
   $val;
   `,
-  div_input: 
-  `
+  div_input: `
   if (jQuery('div input').length > 0) {
     [
       jQuery('div input:checked').length > 0
@@ -284,10 +280,33 @@ const propertiesSkeleton = {
   }
   $val;  
   `,
-}
+};
+
+const propertiesSkeletonDataConfig = [
+  {
+    showCopyIcon: false,
+    textToCopy: propertiesSkeletonData.select_option,
+    buttonText: "select_option",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: propertiesSkeletonData.ul_li,
+    buttonText: "ul_li",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: propertiesSkeletonData.div_input,
+    buttonText: "div_input",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: propertiesSkeletonData.div_button_a_img,
+    buttonText: "div_button_a_img",
+  },
+];
 
 module.exports = {
   coupons,
   skeleton,
-  propertiesSkeleton
+  propertiesSkeletonDataConfig,
 };

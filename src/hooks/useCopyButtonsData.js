@@ -6,6 +6,7 @@ export const useCopyButtonsData = (data, config) => {
       config.map((item) => ({
         textToCopy: data[item.textToCopy],
         buttonText: item.buttonText,
+        showCopyIcon: item.showCopyIcon,
       })),
     [config, data]
   );
@@ -19,6 +20,7 @@ export const usePropertiesCopyButtonsData = (propdata, index, config) => {
       config.map((item) => ({
         textToCopy: propdata[index]?.[item.textToCopy],
         buttonText: item.buttonText,
+        showCopyIcon: item.showCopyIcon,
       })),
     [config, propdata, index]
   );

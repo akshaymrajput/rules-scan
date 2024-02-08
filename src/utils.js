@@ -32,19 +32,35 @@ const getAnythingBetweenSquareBrackets = (string) => {
 };
 
 const copyButtonsConfig = [
-  { textToCopy: "productTitle", buttonText: "Product Title" },
-  { textToCopy: "description", buttonText: "Description" },
-  { textToCopy: "mainImage", buttonText: "Main Image" },
-  { textToCopy: "itemImages", buttonText: "Item Images" },
-  { textToCopy: "productPrice", buttonText: "Product Price" },
-  { textToCopy: "productOriginalPrice", buttonText: "Product Original Price" },
-  { textToCopy: "stockStatus", buttonText: "Stock Status" },
+  {
+    showCopyIcon: true,
+    textToCopy: "productTitle",
+    buttonText: "Product Title",
+  },
+  { showCopyIcon: true, textToCopy: "description", buttonText: "Description" },
+  { showCopyIcon: true, textToCopy: "mainImage", buttonText: "Main Image" },
+  { showCopyIcon: true, textToCopy: "itemImages", buttonText: "Item Images" },
+  {
+    showCopyIcon: true,
+    textToCopy: "productPrice",
+    buttonText: "Product Price",
+  },
+  {
+    showCopyIcon: true,
+    textToCopy: "productOriginalPrice",
+    buttonText: "Product Original Price",
+  },
+  { showCopyIcon: true, textToCopy: "stockStatus", buttonText: "Stock Status" },
 ];
 
 const propertiesCopyButtonsConfig = [
-  { textToCopy: "getter", buttonText: "Property Getter" },
-  { textToCopy: "setter", buttonText: "Property Setter" },
-  { textToCopy: "stockGetter", buttonText: "Property Stock Getter" },
+  { showCopyIcon: true, textToCopy: "getter", buttonText: "Property Getter" },
+  { showCopyIcon: true, textToCopy: "setter", buttonText: "Property Setter" },
+  {
+    showCopyIcon: true,
+    textToCopy: "stockGetter",
+    buttonText: "Property Stock Getter",
+  },
 ];
 
 module.exports = {

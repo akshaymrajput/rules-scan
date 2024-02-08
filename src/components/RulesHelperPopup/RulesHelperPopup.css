@@ -67,13 +67,15 @@ section .title {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.5rem;
-  place-content: space-between;
   margin-top: 0.5rem;
+}
+
+#tools-grid > div {
 }
 
 #tools-grid #rulesHelperCustomButton {
   border-radius: 10px;
   width: max-content !important;
-  gap: 6px;
-  flex: 1;
+  gap: 3px;
+  font-size: 0.6rem;
 }

@@ -43,6 +43,7 @@ const RulesHelperMain = () => {
           key={index}
           textToCopy={buttonData.textToCopy}
           buttonText={buttonData.buttonText}
+          showCopyIcon={true}
         />
       </div>
     ))) || <div>No rules found</div>;

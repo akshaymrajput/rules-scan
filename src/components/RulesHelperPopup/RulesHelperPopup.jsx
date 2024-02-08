@@ -4,18 +4,17 @@ import Button from "../Button/Button";
 import { FaAnglesDown, FaAnglesUp, FaRegCopy } from "react-icons/fa6";
 import CopyButton from "../CopyButton/CopyButton";
 
-import { skeleton, propertiesSkeleton } from "./popup_data";
+import {
+  skeleton,
+  propertiesSkeleton,
+  propertiesSkeletonDataConfig,
+} from "./popup_data";
 
 const RulesHelperPopup = () => {
   const [showProperties, setShowProperties] = useState(false);
-  const [showTools, setShowTools] = useState(false);
 
   const handlePropertiesClick = () => {
     setShowProperties(!showProperties);
-  };
-
-  const handleToolsClick = () => {
-    setShowTools(!showTools);
   };
 
   return (
@@ -39,69 +38,85 @@ const RulesHelperPopup = () => {
         </Button>
         {showProperties ? (
           <div id="properties-grid">
-            <CopyButton
-              className="propertiesBtn"
-              textToCopy={propertiesSkeleton.ul_li}
-              buttonText="ul_li"
-            ></CopyButton>
-            <CopyButton
-              className="propertiesBtn"
-              textToCopy={propertiesSkeleton.select_option}
-              buttonText="select_option"
-            ></CopyButton>
-            <CopyButton
-              className="propertiesBtn"
-              textToCopy={propertiesSkeleton.div_input}
-              buttonText="div_input"
-            ></CopyButton>
-            <CopyButton
-              className="propertiesBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
+            {propertiesSkeletonDataConfig.map((item) => (
+              <CopyButton
+                className="propertiesBtn"
+                textToCopy={item.textToCopy}
+                buttonText={item.buttonText}
+                showCopyIcon={item.showCopyIcon}
+              />
+            ))}
           </div>
         ) : null}
       </section>
       <section>
         <h2 className="title">Misc</h2>
-        <Button className="miscToggleBtn" onClick={handleToolsClick}>
-          Misc
-          {showTools ? <FaAnglesUp /> : <FaAnglesDown />}
-        </Button>
-        {showTools ? (
-          <div id="tools-grid">
+        {/* <div id="tools-grid">
+          <div>
             <CopyButton
               className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
               buttonText="div_button-a"
-            ></CopyButton>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeleton.div_button_a_img}
-              buttonText="div_button-a"
-            ></CopyButton>
+              showCopyIcon={false}
+            />
           </div>
-        ) : null}
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={true}
+            />
+          </div>
+          <div>
+            <CopyButton
+              className="toolsBtn"
+              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
+              buttonText="div_button-a"
+              showCopyIcon={false}
+            />
+          </div>
+        </div> */}
       </section>
     </div>
   );
