@@ -37,11 +37,21 @@ export const useProductDataAvailability = () => {
     chrome.runtime.sendMessage({ type: "checkURLChange" });
 
     // Listen for messages from the background script
-    chrome.runtime.onMessage.addListener((message) => {
+    const messageListener = (message) => {
       if (message.type === "updateProductData") {
         checkProductData();
       }
-    });
+    };
+    chrome.runtime.onMessage.addListener(messageListener);
+
+    // Cleanup function
+    return () => {
+      // Clear any ongoing setTimeout timers
+      clearTimeout(checkProductData);
+
+      // Remove message listener
+      chrome.runtime.onMessage.removeListener(messageListener);
+    };
   }, []);
 
   return isProductDataAvailable;

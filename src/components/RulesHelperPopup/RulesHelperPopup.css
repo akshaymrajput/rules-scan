@@ -1,4 +1,4 @@
-@import url(../../contentScript/global.css);
+@import url("../../global.css");
 
 svg {
   transform: scale(1.2);
@@ -12,23 +12,23 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border: 2px solid rgba(255, 250, 250, 0.5);
+  border: 2px solid var(--rules-helper__border-outline);
 }
 
 #rules-popup header {
-  color: snow;
-  font-size: var(--font-size);
+  color: var(--rules-helper__color);
+  font-size: var(--rules-helper__font-size);
 }
 
 #rules-popup #rulesHelperCustomButton {
-  background-color: #212121;
+  background-color: var(--rules-helper__dark-color);
   font-size: 12px;
 }
 
 #rules-popup #rulesHelperCustomButton:hover {
-  background: lightgray;
+  background: var(--rules-helper__btn-hover-bg-color);
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
-  color: #212121;
+  color: var(--rules-helper__dark-color);
   transition: all 0.25s ease-in-out;
 }
 
@@ -37,13 +37,13 @@ svg {
 }
 
 section {
-  background: snow;
+  background: var(--rules-helper__bg-primary);
   padding: 0.5rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
 }
 
 section .title {
-  font-size: var(--font-size);
+  font-size: var(--rules-helper__font-size);
   margin-top: 0;
 }
 

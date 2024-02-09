@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;500;700&display=swap");
+
+:root {
+  /* Rules Helper Window */
+
+  --rules-helper__bg-primary: #fffafa;
+  /* --rules-helper__bg-primary: #f8f8ff; */
+  --rules-helper__bg-dark: #000000;
+  --rules-helper__bg-danger: #ff0000;
+  --rules-helper__border-outline: rgba(255, 250, 250, 0.5);
+  --rules-helper__border-outline-prop: #d3d3d3;
+  /* --rules-helper__border-outline: #d8b4e2; */
+  --rules-helper__padding-outer: 3px;
+  --rules-helper__padding-container: 15px;
+  --rules-helper__border-radius: 5px;
+  --rules-helper__width: 300px;
+  --rules-helper__max-height: 500px;
+  --rules-helper__box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+  --rules-helper__svg-transform-scale: scale(1.4);
+  --rules-helper__btn-container-width: 100%;
+  --rules-helper__color: #fffafa;
+  /* --rules-helper__color: #f8f8ff; */
+  --rules-helper__dark-color: #212121;
+  --rules-helper__font-size: 16px;
+
+  /* Button */
+
+  --rules-helper__btn-min-height: 40px;
+  /* --rules-helper__btn-bg-color: #301934; */
+  --rules-helper__btn-bg-color: #212121;
+  --rules-helper__btn-color: #f8f8ff;
+  --rules-helper__btn-border-radius: 3px;
+  /* --rules-helper__btn-hover-bg-color: #c699d1; */
+  --rules-helper__btn-hover-bg-color: #d3d3d3;
+}

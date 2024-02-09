@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "../Button/Button";
 import { IoMdClose } from "react-icons/io";
 import { FaRegFaceSmileBeam } from "react-icons/fa6";
@@ -11,6 +11,7 @@ import scanForProperties from "../../propertyFetch";
 import CopyButton from "../CopyButton/CopyButton";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { copyButtonsConfig, propertiesCopyButtonsConfig } from "../../utils";
+import Draggable from "react-draggable";
 
 const RulesHelperMain = () => {
   const data = scanForRules();
@@ -21,6 +22,8 @@ const RulesHelperMain = () => {
 
   const [rulesTabOpen, setRulesTabOpen] = useState(true);
   const [propertiesTabOpen, setPropertiesTabOpen] = useState(false);
+
+  const nodeRef = useRef(null);
 
   const handleVisibilityToggle = (shouldHide) => {
     setIsHidden(shouldHide);
@@ -71,55 +74,61 @@ const RulesHelperMain = () => {
         })}
       </div>
     );
-  }) || <div>No properties found</div>;
+  }) || <div>No property found</div>;
 
   return (
     <>
-      <div
-        id="rulesHelperMain"
-        style={{ display: isHidden ? "none" : "block" }}
-      >
-        <div className="navbar">
-          <div className="tabs">
-            <div className="rulesContainerTab">
-              <Button
-                width="max-content"
-                className="rulesButton"
-                title="Open Rules Tab"
-                onClick={() => handleTabClick("rules")}
-              >
-                Rules
-              </Button>
-              {rulesTabOpen ? <TiArrowSortedDown /> : null}
-            </div>
-            <div className="propertiesContainerTab">
-              <Button
-                width="max-content"
-                className="propertiesButton"
-                title="Open Properties Tab"
-                onClick={() => handleTabClick("properties")}
-              >
-                Properties
-              </Button>
-              {propertiesTabOpen ? <TiArrowSortedDown /> : null}
-            </div>
-          </div>
+      <Draggable nodeRef={nodeRef} handle=".drag">
+        <div
+          id="rulesHelperMain"
+          style={{ display: isHidden ? "none" : "block" }}
+          ref={nodeRef}
+        >
+          <div className="drag"></div>
+          <div className="container">
+            <div className="navbar">
+              <div className="tabs">
+                <div className="rulesContainerTab">
+                  <Button
+                    width="max-content"
+                    className="rulesButton"
+                    title="Open Rules Tab"
+                    onClick={() => handleTabClick("rules")}
+                  >
+                    Rules
+                  </Button>
+                  {rulesTabOpen ? <TiArrowSortedDown /> : null}
+                </div>
+                <div className="propertiesContainerTab">
+                  <Button
+                    width="max-content"
+                    className="propertiesButton"
+                    title="Open Properties Tab"
+                    onClick={() => handleTabClick("properties")}
+                  >
+                    Properties
+                  </Button>
+                  {propertiesTabOpen ? <TiArrowSortedDown /> : null}
+                </div>
+              </div>
 
-          <div className="rulesHelperCloseContainer">
-            <Button
-              width="max-content"
-              className="rulesHelperCloseButton"
-              title="Close Rules Helper Window"
-              onClick={() => handleVisibilityToggle(true)}
-            >
-              <IoMdClose />
-            </Button>
+              <div className="rulesHelperCloseContainer">
+                <Button
+                  width="max-content"
+                  className="rulesHelperCloseButton"
+                  title="Close Rules Helper Window"
+                  onClick={() => handleVisibilityToggle(true)}
+                >
+                  <IoMdClose />
+                </Button>
+              </div>
+            </div>
+
+            {rulesTabOpen && displayRules}
+            {propertiesTabOpen && displayProperties}
           </div>
         </div>
-
-        {rulesTabOpen && displayRules}
-        {propertiesTabOpen && displayProperties}
-      </div>
+      </Draggable>
       <div
         id="rulesHelperOpenMain"
         style={{ display: isHidden ? "block" : "none" }}

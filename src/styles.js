@@ -1,32 +1,6 @@
 export const styles = `
 @import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;500;700&display=swap");
 
-:root {
-  /* Rules Helper Window */
-
-  --bg-primary: #f8f8ff;
-  --bg-danger: #ff0000;
-  --border-outline: #d8b4e2;
-  --padding: 20px;
-  --border-radius: 5px;
-  --width: 300px;
-  --max-height: 500px;
-  --box-shadow: 0px 0px 5px rgba(216, 180, 226, 0.3);
-  --svg-transform-scale: scale(1.4);
-  --btn-container-width: 100%;
-  --color: #f8f8ff;
-  --dark-color: #000000;
-  --font-size: 16px;
-
-  /* Button */
-
-  --btn-min-height: 40px;
-  --btn-bg-color: #301934;
-  --btn-color: #f8f8ff;
-  --btn-border-radius: 3px;
-  --btn-hover-bg-color: #c699d1;
-}
-
 [id^="rulesHelper"] {
   font-family: "MuseoModerno", sans-serif;
   /* font-family: "Montserrat", sans-serif !important; */
@@ -36,10 +10,33 @@ export const styles = `
 }
 
 [id^="rulesHelper"] svg {
-  transform: var(--svg-transform-scale);
+  transform: var(--rules-helper__svg-transform-scale);
 }
 #rulesHelperMain svg {
   margin: 0px;
+}
+
+#rulesHelperMain .drag {
+  height: 10px;
+  width: 100%;
+}
+
+#rulesHelperMain .drag:hover {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+#rulesHelperMain .drag:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+#rulesHelperMain .container {
+  padding: var(--rules-helper__padding-container);
+  background: var(--rules-helper__bg-primary);
 }
 
 #rulesHelperMain {
@@ -49,13 +46,13 @@ export const styles = `
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--bg-primary);
-  padding: var(--padding);
-  border: 1px solid var(--border-outline);
+  background: var(--rules-helper__bg-dark);
+  padding: var(--rules-helper__padding-outer);
+  border: 1px solid var(--rules-helper__border-outline);
   border-radius: 5px;
-  box-shadow: var(--box-shadow);
-  width: var(--width);
-  max-height: var(--max-height);
+  box-shadow: var(--rules-helper__box-shadow);
+  width: var(--rules-helper__width);
+  max-height: var(--rules-helper__max-height);
   overflow: scroll;
 }
 
@@ -81,31 +78,32 @@ export const styles = `
   align-items: center;
 }
 #rulesHelperMain .navbar .tabs > div[class$="ContainerTab"] > svg {
-  color: var(--btn-bg-color);
+  color: var(--rules-helper__btn-bg-color);
 }
 
 #rulesHelperMain .propertiesContainer {
-  border: 1px solid var(--border-outline);
+  border: 1px solid var(--rules-helper__border-outline-prop);
   padding: 10px;
   margin-top: 15px;
 }
 
 #rulesHelperMain .propertiesContainer div.label {
-  color: var(--dark-color);
+  color: var(--rules-helper__dark-color);
   text-transform: capitalize;
-  font-size: var(--font-size);
+  font-size: var(--rules-helper__font-size);
   margin-top: -23px;
-  background-color: var(--bg-primary);
+  background-color: var(--rules-helper__bg-primary);
   width: max-content;
   padding: 0 5px;
 }
 
 #rulesHelperMain .rulesHelperCloseContainer .rulesHelperCloseButton {
-  color: var(--color);
+  color: var(--rules-helper__color);
 }
 
 #rulesHelperMain .rulesHelperCloseContainer .rulesHelperCloseButton:hover {
-  background: var(--bg-danger);
+  background: var(--rules-helper__bg-danger);
+  color: var(--rules-helper__dark-color);
   transition: all 0.1s ease-in-out;
 }
 
@@ -115,7 +113,7 @@ export const styles = `
 }
 
 #rulesHelperMain .rulesHelperButtonContainer {
-  width: var(--btn-container-width);
+  width: var(--rules-helper__btn-container-width);
   margin-top: 10px;
 }
 
@@ -130,47 +128,27 @@ export const styles = `
   line-height: 1.5;
 }
 
-#rulesHelperMain .navigationButtonsContainer {
-  width: 100%;
-  border: 1px solid darksalmon;
-  margin-top: 12px;
-  padding: 5px;
-  display: flex;
-  gap: 5px;
-}
-
-#rulesHelperMain .navigationButtonsContainer .navigationButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 40px;
-  color: #f8f8ff;
-  font-size: 18px;
-  background-color: #a952c2;
-  border-radius: 3px;
-}
-
 #rulesHelperCustomButton.custom-button {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  min-height: var(--btn-min-height);
+  min-height: var(--rules-helper__btn-min-height);
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: var(--btn-bg-color);
-  color: var(--btn-color);
+  background-color: var(--rules-helper__btn-bg-color);
+  color: var(--rules-helper__btn-color);
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-  border-radius: var(--btn-border-radius);
-  font-size: var(--font-size);
+  border-radius: var(--rules-helper__btn-border-radius);
+  font-size: var(--rules-helper__font-size);
 }
 
 #rulesHelperCustomButton.custom-button:hover {
-  background-color: var(--btn-hover-bg-color);
+  background-color: var(--rules-helper__btn-hover-bg-color);
+  color: var(--rules-helper__dark-color);
   box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
   transition: all 0.1s ease-in-out;
 }
