@@ -10,13 +10,19 @@ const ContentScript = () => {
   const isProductDataAvailable = useProductDataAvailability();
 
   useEffect(() => {
+    const handleDOMLoad = () => {
+      setIsDOMLoaded(true);
+    };
+
     if (document.readyState === "complete") {
       setIsDOMLoaded(true);
     } else {
-      window.onload = () => {
-        setIsDOMLoaded(true);
-      };
+      window.addEventListener("load", handleDOMLoad);
     }
+
+    return () => {
+      window.removeEventListener("load", handleDOMLoad);
+    };
   }, []);
 
   return (

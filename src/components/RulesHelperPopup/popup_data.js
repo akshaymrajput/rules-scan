@@ -1,3 +1,5 @@
+// @collapse
+
 const coupons = [
   {
     conditions: {
@@ -286,22 +288,162 @@ const propertiesSkeletonDataConfig = [
   {
     showCopyIcon: false,
     textToCopy: propertiesSkeletonData.select_option,
-    buttonText: "select_option",
+    buttonText: "Select Option",
   },
   {
     showCopyIcon: false,
     textToCopy: propertiesSkeletonData.ul_li,
-    buttonText: "ul_li",
+    buttonText: "UL LI",
   },
   {
     showCopyIcon: false,
     textToCopy: propertiesSkeletonData.div_input,
-    buttonText: "div_input",
+    buttonText: "Div Input",
   },
   {
     showCopyIcon: false,
     textToCopy: propertiesSkeletonData.div_button_a_img,
-    buttonText: "div_button_a_img",
+    buttonText: "Div Btn/Link/Img",
+  },
+];
+
+const toolsData = {
+  currency_if_else: `
+let priceExtractor = $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "");
+
+if ($pr.indexOf("€") !== -1) $pr = "EUR" + priceExtractor;
+else if ($pr.indexOf("CA$") !== -1) $pr = "CAD" + priceExtractor;
+else if ($pr.indexOf("£") !== -1) $pr = "GBP" + priceExtractor;
+else if ($pr.indexOf("AU$") !== -1) $pr = "AUD" + priceExtractor;
+else if ($pr.indexOf("Ft") !== -1) $pr = "HUF" + priceExtractor;
+else if ($pr.indexOf("MX$") !== -1) $pr = "MXN" + priceExtractor;
+else if ($pr.indexOf("R$") !== -1) $pr = "BRL" + priceExtractor;
+else if ($pr.indexOf("₹") !== -1) $pr = "INR" + priceExtractor;
+else if ($pr.indexOf("Rs") !== -1) $pr = "INR" + priceExtractor;
+else if ($pr.indexOf("CN¥") !== -1) $pr = "CNY" + priceExtractor;
+else if ($pr.indexOf("NZ$") !== -1) $pr = "NZD" + priceExtractor;
+else if ($pr.indexOf("HK$") !== -1) $pr = "HKD" + priceExtractor;
+else if ($pr.indexOf("¥") !== -1) $pr = "JPY" + priceExtractor;
+else if ($pr.indexOf("₪") !== -1) $pr = "ILS" + priceExtractor;
+else if ($pr.indexOf("฿") !== -1) $pr = "THB" + priceExtractor;
+else if ($pr.indexOf("₩") !== -1) $pr = "KRW" + priceExtractor;
+else if ($pr.indexOf("₫") !== -1) $pr = "VND" + priceExtractor;
+else if ($pr.indexOf("DKKr.") > -1) $pr = "DKK" + priceExtractor;
+else if ($pr.indexOf("SEK") > -1) $pr = "SEK" + priceExtractor;
+else if ($pr.indexOf("円") > -1) $pr = "JPY" + priceExtractor;
+else if ($pr.indexOf("¥") > -1) $pr = "JPY" + priceExtractor;
+else if ($pr.indexOf("p.") > -1) $pr = "RUB" + priceExtractor;
+else if ($pr.indexOf("руб.") > -1) $pr = "RUB" + priceExtractor;
+else if ($pr.indexOf("руб") > -1) $pr = "RUB" + priceExtractor;
+else if ($pr.indexOf("US$") >= 0) $pr = "USD" + priceExtractor;
+else if ($pr.indexOf("฿") >= 0) $pr = "THB" + priceExtractor;
+else if ($pr.indexOf("S$") >= 0) $pr = "SGD" + priceExtractor;
+else if ($pr.indexOf("RM") >= 0) $pr = "MYR" + priceExtractor;
+else if ($pr.indexOf("₱") >= 0) $pr = "PHP" + priceExtractor;
+else if ($pr.indexOf("грн") >= 0) $pr = "UAH" + priceExtractor;
+else if ($pr.indexOf("zł") >= 0) $pr = "PLN" + priceExtractor;
+else if ($pr.indexOf("$") >= 0) $pr = "USD" + priceExtractor;
+else $pr.toUpperCase();
+`,
+  img_bg_css: `
+jQuery(IMG_SELECTOR)
+.css('background-image')
+.replace('url(','')
+.replace(')','')
+.replace(/\\"/gi, "")
+.split('?')[0]
+`,
+  raw_text: `
+jQuery(SELECTOR).clone().children().remove().end().text().trim();
+`,
+  brand_currency_from_json: `
+// Currency
+$cr = "";
+
+try {
+  $cr = JSON.parse(
+    jQuery('script[type="application/ld+json"]:contains(priceCurrency)')
+      .text()
+      .trim()
+  ).offers[0].priceCurrency;
+} catch (e) {}
+
+// Brand
+var brand = "";
+try {
+  brand = JSON.parse(
+    jQuery('[type="application/ld+json"]:contains(brand):first').text().trim()
+  ).brand.name;
+} catch (e) {}
+
+brand = brand ? brand : "SITE_NAME";
+`,
+  img_srcset: `
+// srcset
+jQuery(IMG_SELECTOR).attr('srcset')?.split(',')?.pop()?.trim()?.split(' ')?.[0]
+
+// data-srcset
+jQuery(IMG_SELECTOR).attr('data-srcset')?.split(',')?.pop()?.trim()?.split(' ')?.[0]
+`,
+  img_canvas: `
+// Get Img from Canvas
+let canvasElement = jQuery(CANVAS_SELECTOR);
+let imgData = canvasElement?.[0]?.toDataURL('image/jpeg');
+
+$img =
+  imgData?.length ? imgData : '' ||
+  jQuery('[property="og:image"]:last').attr("content");
+
+if ($img) {
+  $img = $img.split("?")[0];
+  $img = $img.indexOf("data") == 0 ? "" + $img : ($img.indexOf("http") == -1 ? "https:" + $img : $img);
+}
+`,
+  img_src_including_domain: `
+if ($img) {
+  $img = $img.split("?")[0];
+  $img = $img.indexOf("//") == 0 ? "https:" + $img : $img;
+  $img = $img.charAt(0) == "/" ? 'PASTE_DOMAIN_LINK_WITHOUT_FORWARD_SLASH' + $img : $img;
+  $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+}
+`,
+};
+
+const toolsDataConfig = [
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.currency_if_else,
+    buttonText: "Currency Check",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.img_bg_css,
+    buttonText: "Background CSS Img",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.raw_text,
+    buttonText: "Raw Text",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.brand_currency_from_json,
+    buttonText: "Brand/Currency JSON",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.img_srcset,
+    buttonText: "Img Srcset",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.img_canvas,
+    buttonText: "Img from Canvas",
+  },
+  {
+    showCopyIcon: false,
+    textToCopy: toolsData.img_src_including_domain,
+    buttonText: "Img with Domain",
   },
 ];
 
@@ -309,4 +451,5 @@ module.exports = {
   coupons,
   skeleton,
   propertiesSkeletonDataConfig,
+  toolsDataConfig,
 };

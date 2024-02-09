@@ -106,6 +106,12 @@ export const styles = `
 
 #rulesHelperMain .rulesHelperCloseContainer .rulesHelperCloseButton:hover {
   background: var(--bg-danger);
+  transition: all 0.1s ease-in-out;
+}
+
+#rulesHelperMain .rulesHelperCloseContainer .rulesHelperCloseButton:active,
+#rulesHelperCustomButton.custom-button:active {
+  transform: scale(0.95);
 }
 
 #rulesHelperMain .rulesHelperButtonContainer {
@@ -160,12 +166,13 @@ export const styles = `
   padding: 5px 10px;
   cursor: pointer;
   border-radius: var(--btn-border-radius);
-  transition: background-color 0.3s ease;
   font-size: var(--font-size);
 }
 
 #rulesHelperCustomButton.custom-button:hover {
   background-color: var(--btn-hover-bg-color);
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  transition: all 0.1s ease-in-out;
 }
 
 `;

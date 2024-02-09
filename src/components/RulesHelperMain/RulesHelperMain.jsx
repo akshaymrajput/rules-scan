@@ -64,6 +64,7 @@ const RulesHelperMain = () => {
                 key={index}
                 textToCopy={buttonData.textToCopy}
                 buttonText={buttonData.buttonText}
+                showCopyIcon={true}
               />
             </div>
           );

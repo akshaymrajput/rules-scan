@@ -1,3 +1,5 @@
+// @collapse
+
 const { complexityType } = require("./utils");
 
 module.exports = [
@@ -717,56 +719,149 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [".product .swatch:has(.option_title:has(~ input))"],
+    },
+    data: {
+      propDetails: {
+        name: `.option_title:first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+          "input"
+        ).length > 0
+      ) {
+        [
+          jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+            "input:checked"
+          ).length > 0
+            ? jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+                .siblings("input:checked")
+                .val()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+              .siblings("input")
+              .map(function (i, e) {
+                return jQuery(e).val();
+              })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+          "input"
+        ).length > 0 &&
+        ($sarg != "Choose REPLACE_ME") & ($sarg != "No REPLACE_ME")
+      ) {
+        jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+          .siblings("input")
+          .each(function (i, e) {
+            if (jQuery(this).val().trim() == $sarg) {
+              jQuery(this)[0]?.click();
+            }
+          });
+      }
+      wait_for(function () {
+        return true;
+      });
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+          "input"
+        ).length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+          .siblings("input")
+          .each(function () {
+            if (
+              jQuery(this).val().trim() == $sarg &&
+              !jQuery(this).next().hasClass("soldout")
+            ) {
+              $val = false;
+            }
+          });
+      }
+      $val;
+      `,
+    },
+  },
 ];
 
 /*
-if (jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0) {
+if (
+  jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+    "input"
+  ).length > 0
+) {
   [
-    jQuery('.product__page input[name="options[REPLACE_ME]"]:checked').length > 0
-      ? jQuery('.product__page input[name="options[REPLACE_ME]"]:checked')
-          .attr("value")
-          .trim()
+    jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+      "input:checked"
+    ).length > 0
+      ? jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+          .siblings("input:checked")
+          .val()
       : "Select REPLACE_ME",
     jQuery.makeArray(
-      jQuery('.product__page input[name="options[REPLACE_ME]"]').map(function (i, e) {
-        return jQuery(e).attr("value").trim();
-      })
+      jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+        .siblings("input")
+        .map(function (i, e) {
+          return jQuery(e).val();
+        })
     ),
   ];
 } else ["No REPLACE_ME", ["No REPLACE_ME"]];
 
-// $sarg='Gold'
+// $sarg='XL'
 if (
-  jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
-  $sarg != "Choose REPLACE_ME" &&
-  $sarg != "No REPLACE_ME"
+  jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+    "input"
+  ).length > 0 &&
+  ($sarg != "Choose REPLACE_ME") & ($sarg != "No REPLACE_ME")
 ) {
-  jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function (i, e) {
-    if (jQuery(this).val().trim() == $sarg) {
-      jQuery(this)[0]?.click();
-    }
-  });
+  jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+    .siblings("input")
+    .each(function (i, e) {
+      if (jQuery(this).val().trim() == $sarg) {
+        jQuery(this)[0]?.click();
+      }
+    });
 }
 wait_for(function () {
   return true;
 });
 
-// $sarg = 'Gold'
+// $sarg = 'GRAY'
 $val = false;
 if (
-  jQuery('.product__page input[name="options[REPLACE_ME]"]').length > 0 &&
+  jQuery(".product .swatch .option_title:contains(REPLACE_ME):first").siblings(
+    "input"
+  ).length > 0 &&
   $sarg != "No REPLACE_ME" &&
   $sarg != "Select REPLACE_ME"
 ) {
   $val = true;
-  jQuery('.product__page input[name="options[REPLACE_ME]"]').each(function () {
-    if (
-      jQuery(this).val().trim() == $sarg &&
-      !(jQuery(this).hasClass("sold-out") || jQuery(this).hasClass("disabled") || jQuery(this).is(":disabled"))
-    ) {
-      $val = false;
-    }
-  });
+  jQuery(".product .swatch .option_title:contains(REPLACE_ME):first")
+    .siblings("input")
+    .each(function () {
+      if (
+        jQuery(this).val().trim() == $sarg &&
+        !jQuery(this).next().hasClass("soldout")
+      ) {
+        $val = false;
+      }
+    });
 }
 $val;
 */

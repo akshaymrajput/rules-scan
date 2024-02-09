@@ -1,14 +1,44 @@
 import React, { useState } from "react";
 import "./RulesHelperPopup.css";
 import Button from "../Button/Button";
-import { FaAnglesDown, FaAnglesUp, FaRegCopy } from "react-icons/fa6";
+import { FaAnglesDown, FaAnglesUp } from "react-icons/fa6";
 import CopyButton from "../CopyButton/CopyButton";
 
 import {
   skeleton,
-  propertiesSkeleton,
   propertiesSkeletonDataConfig,
+  toolsDataConfig,
 } from "./popup_data";
+
+const PropertiesButtons = ({ properties }) => (
+  <div id="properties-grid">
+    {properties.map((item) => (
+      <CopyButton
+        key={item.buttonText}
+        className="propertiesBtn"
+        textToCopy={item.textToCopy}
+        buttonText={item.buttonText}
+        showCopyIcon={item.showCopyIcon}
+      />
+    ))}
+  </div>
+);
+
+const ToolsButtons = ({ tools }) => (
+  <div id="tools-grid">
+    {tools.map((item) => (
+      <div className="toolItem" key={item.buttonText}>
+        <CopyButton
+          key={item.buttonText}
+          className="toolsBtn"
+          textToCopy={item.textToCopy}
+          buttonText={item.buttonText}
+          showCopyIcon={item.showCopyIcon}
+        />
+      </div>
+    ))}
+  </div>
+);
 
 const RulesHelperPopup = () => {
   const [showProperties, setShowProperties] = useState(false);
@@ -18,7 +48,7 @@ const RulesHelperPopup = () => {
   };
 
   return (
-    <div id="rules_popup">
+    <div id="rules-popup">
       <header>
         <div>Static Reusable Data</div>
       </header>
@@ -28,6 +58,7 @@ const RulesHelperPopup = () => {
           className="rulesSkeletonBtn"
           textToCopy={skeleton.rules}
           buttonText="Copy Rules Skeleton"
+          showCopyIcon={true}
         ></CopyButton>
       </section>
       <section>
@@ -37,86 +68,12 @@ const RulesHelperPopup = () => {
           {showProperties ? <FaAnglesUp /> : <FaAnglesDown />}
         </Button>
         {showProperties ? (
-          <div id="properties-grid">
-            {propertiesSkeletonDataConfig.map((item) => (
-              <CopyButton
-                className="propertiesBtn"
-                textToCopy={item.textToCopy}
-                buttonText={item.buttonText}
-                showCopyIcon={item.showCopyIcon}
-              />
-            ))}
-          </div>
+          <PropertiesButtons properties={propertiesSkeletonDataConfig} />
         ) : null}
       </section>
       <section>
-        <h2 className="title">Misc</h2>
-        {/* <div id="tools-grid">
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={true}
-            />
-          </div>
-          <div>
-            <CopyButton
-              className="toolsBtn"
-              textToCopy={propertiesSkeletonDataConfig.div_button_a_img}
-              buttonText="div_button-a"
-              showCopyIcon={false}
-            />
-          </div>
-        </div> */}
+        <h2 className="title">Snippets</h2>
+        <ToolsButtons tools={toolsDataConfig} />
       </section>
     </div>
   );

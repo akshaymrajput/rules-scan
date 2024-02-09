@@ -25,9 +25,8 @@ const CopyButton = ({ textToCopy, buttonText, showCopyIcon }) => {
         className="rulesHelperCopyButton"
         onClick={copyToClipboard}
         title={`Copy ${buttonText}`}
-        showCopyIcon={showCopyIcon}
       >
-        {copySuccess ? (
+        {copySuccess && showCopyIcon ? (
           <span className="rulesHelperSuccess">Copied!</span>
         ) : (
           buttonText

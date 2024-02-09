@@ -4,7 +4,7 @@ svg {
   transform: scale(1.2);
 }
 
-#rules_popup {
+#rules-popup {
   padding: 1rem;
   width: 300px;
   height: max-content;
@@ -12,24 +12,28 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  border: 2px solid snow;
+  border: 2px solid rgba(255, 250, 250, 0.5);
 }
 
-#rules_popup header {
+#rules-popup header {
   color: snow;
   font-size: var(--font-size);
 }
 
-#rules_popup #rulesHelperCustomButton {
+#rules-popup #rulesHelperCustomButton {
   background-color: #212121;
   font-size: 12px;
 }
 
-#rules_popup #rulesHelperCustomButton:hover {
-  background: linear-gradient(to bottom right, lightgray, transparent);
-  border: 1px solid #212121;
+#rules-popup #rulesHelperCustomButton:hover {
+  background: lightgray;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
   color: #212121;
   transition: all 0.25s ease-in-out;
+}
+
+#rules-popup #rulesHelperCustomButton:active {
+  transform: scale(0.95);
 }
 
 section {
@@ -40,6 +44,7 @@ section {
 
 section .title {
   font-size: var(--font-size);
+  margin-top: 0;
 }
 
 #properties-grid {
@@ -70,12 +75,12 @@ section .title {
   margin-top: 0.5rem;
 }
 
-#tools-grid > div {
+#tools-grid > .toolItem {
 }
 
 #tools-grid #rulesHelperCustomButton {
+  padding: 0.35rem;
   border-radius: 10px;
   width: max-content !important;
-  gap: 3px;
   font-size: 0.6rem;
 }

@@ -763,8 +763,8 @@ module.exports = [
         ".product .product__media-item",
       ],
       priceElements: [
-        ".product__info-wrapper .price__sale:visible .price-item.price-item--sale",
-        ".product__info-wrapper .price__regular:visible .price-item.price-item--regular",
+        ".product__info-wrapper .price:first .price__sale:visible .price-item.price-item--sale",
+        ".product__info-wrapper .price:first .price__regular:visible .price-item.price-item--regular",
       ],
       addButton: [".product-form .product-form__submit"],
     },
@@ -805,12 +805,12 @@ module.exports = [
       productPrice: `
       $pr =
         jQuery(
-          ".product__info-wrapper .price__sale:visible .price-item.price-item--sale"
+          ".product__info-wrapper .price:first .price__sale:visible .price-item.price-item--sale"
         )
           .text()
           .trim() ||
         jQuery(
-          ".product__info-wrapper .price__regular:visible .price-item.price-item--regular"
+          ".product__info-wrapper .price:first .price__regular:visible .price-item.price-item--regular"
         )
           .text()
           .trim();
@@ -827,12 +827,12 @@ module.exports = [
       productOriginalPrice: `
       $pr =
         jQuery(
-          ".product__info-wrapper .price__sale:visible .price-item.price-item--regular"
+          ".product__info-wrapper .price:first .price__sale:visible .price-item.price-item--regular"
         )
           .text()
           .trim() ||
         jQuery(
-          ".product__info-wrapper .price__regular:visible .price-item.price-item--regular"
+          ".product__info-wrapper .price:first .price__regular:visible .price-item.price-item--regular"
         )
           .text()
           .trim();
