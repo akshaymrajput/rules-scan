@@ -7131,4 +7131,90 @@ module.exports = [
           `,
     },
   },
+  {
+    conditions: {
+      titleElement: ["h1.product-single__title:first"],
+      galleryItems: [
+        ".product-single__photos .slick-slide.slick-active img",
+        ".photos .product-single__photo:not(.hide)",
+      ],
+      priceElements: ["#ProductPrice-product-template:visible"],
+      addButton: ["button#AddToCart-product-template"],
+    },
+    data: {
+      productTitle: `
+      jQuery("h1.product-single__title:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery(".product-single__photos .slick-slide.slick-active .zoomImg").attr(
+          "src"
+        ) ||
+        jQuery(".product-single__photos .slick-slide.slick-active img").attr("src") ||
+        jQuery(".photos .product-single__photo:not(.hide) img").attr("src") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (
+        jQuery(".product-single__photos .slick-slide:not(.slick-cloned)").length > 0
+      ) {
+        $arr = [];
+        jQuery(".product-single__photos .slick-slide:not(.slick-cloned)").each(
+          function (index) {
+            $img =
+              jQuery(this).find(".zoomImg").attr("src") ||
+              jQuery(this).find("img").attr("src");
+            if ($img) {
+              $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+              $img = $img.split("?")[0];
+            }
+      
+            if (index < 4) $arr.push($img);
+          }
+        );
+        $arr;
+      } else if (jQuery(".photos .product-single__photo").length > 0) {
+        $arr = [];
+        jQuery(".photos .product-single__photo").each(function (index) {
+          $img =
+            jQuery(this).find(".zoomImg").attr("src") ||
+            jQuery(this).find("img").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }
+          `,
+      productPrice: `
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+      $pr = jQuery("#ProductPrice-product-template:visible").text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      productOriginalPrice: `
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+      $pr =
+        jQuery("#ComparePrice-product-template:visible").text().trim() ||
+        jQuery("#ProductPrice-product-template:visible").text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      stockStatus: `
+      jQuery(".template-404:visible").length > 0 ||
+        jQuery("button#AddToCart-product-template").is(":disabled");
+          `,
+    },
+  },
 ];
