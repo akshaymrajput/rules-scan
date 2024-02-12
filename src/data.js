@@ -1616,6 +1616,7 @@ module.exports = [
         ".product-detail .main-image .slick-slide.slick-active img[src]",
         ".product-detail .main-image .slick-slide.slick-active img[data-srcset]",
         ".product-detail .main-image .slick-slide:not(.slick-cloned)",
+        ".product-detail .main-image .slide",
       ],
       priceElements: [
         ".product-detail .current-price:visible .money",
@@ -1647,6 +1648,12 @@ module.exports = [
           ?.pop()
           ?.trim()
           ?.split(" ")?.[0] ||
+          jQuery(".product-detail .main-image .slide:first img[data-srcset]").attr("data-srcset")
+          ?.split(", ")
+          ?.pop()
+          ?.trim()
+          ?.split(" ")?.[0] ||
+        jQuery(".product-detail .main-image .slide:first img[src]").attr("src") ||
         jQuery('[property="og:image"]').attr("content");
       if ($img) {
         $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
@@ -1662,6 +1669,35 @@ module.exports = [
         $arr = [];
         jQuery(
           ".product-detail .main-image .slick-slide:not(.slick-cloned):not(:has(video))"
+        ).each(function (index) {
+          $img =
+            jQuery(jQuery(this).find("noscript").text()?.trim())
+              ?.filter("img")
+              .attr("src") ||
+            jQuery(this)
+              .find("img[data-srcset]")
+              .attr("data-srcset")
+              ?.split(", ")
+              ?.pop()
+              ?.trim()
+              ?.split(" ")?.[0] ||
+            jQuery(this).find("img").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      } else if (
+        jQuery(
+          ".product-detail .main-image .slide:not(:has(video))"
+        ).length > 0
+      ) {
+        $arr = [];
+        jQuery(
+          ".product-detail .main-image .slide:not(:has(video))"
         ).each(function (index) {
           $img =
             jQuery(jQuery(this).find("noscript").text()?.trim())
@@ -1866,7 +1902,7 @@ module.exports = [
         )
           ?.filter("img")
           ?.attr("src") ||
-        jQuery(".Product__Gallery .Product__SlideshowNavImage.is-selected img").attr(
+        jQuery(".Product__Gallery .Product__SlideItem--image.is-selected img").attr(
           "src"
         ) ||
         jQuery("#pwzrswiper-wrapper .pwzrswiper-slide-active img").attr(
@@ -1882,13 +1918,13 @@ module.exports = [
           `,
       itemImages: `
       if (
-        jQuery(".Product__Gallery:visible .Product__SlideItem--image noscript")
+        jQuery(".Product__Gallery:visible .Product__SlideItem--image")
           .length > 0
       ) {
         $arr = [];
-        jQuery(".Product__Gallery .Product__SlideItem--image noscript").each(
+        jQuery(".Product__Gallery .Product__SlideItem--image").each(
           function (index) {
-            $img = jQuery(jQuery(this).text()?.trim())?.filter("img")?.attr("src");
+            $img = jQuery(jQuery(this).find('noscript').text()?.trim())?.filter("img")?.attr("src") || jQuery(this).find('img').attr('src');
             if ($img) {
               $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
               $img = $img.split("?")[0];
@@ -1924,7 +1960,6 @@ module.exports = [
         });
         $arr;
       }
-      
           `,
       productPrice: `
       $pr =
@@ -6600,6 +6635,7 @@ module.exports = [
           `,
       mainImage: `
       $img =
+        jQuery(".images-container .product-cover #product-images-large .slick-slide.slick-active img[src]").attr("src") || 
         jQuery(".images-container .product-cover img[src]").attr("src") ||
         jQuery('meta[property="og:image"]').attr("content");
       if ($img) {
@@ -6951,6 +6987,9 @@ module.exports = [
         ".product-single__photos .product__photo.slick-active img[data-src]:first"
       ).attr("data-src") ||
       jQuery(
+        ".product-single__photos .product__slide.is-selected .product__photo:first img[data-src]:first"
+      ).attr("data-src") ||
+      jQuery(
         ".product-single__photos .product__slide:not(.media--hidden) .product__photo:first img[data-src]:first"
       ).attr("data-src") ||
       jQuery(
@@ -7015,6 +7054,80 @@ module.exports = [
           .trim()
           .toLowerCase()
           .indexOf("out") != -1;
+          `,
+    },
+  },
+  {
+    conditions: {
+      titleElement: [".product-page h1:first"],
+      galleryItems: [".product-main-images .product-main-image.selected img"],
+      priceElements: ["#product-price .product-price"],
+      addButton: [".product-add-to-cart input#AddToCart"],
+    },
+    data: {
+      productTitle: `
+      jQuery(".product-page h1:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery(
+          jQuery(".product-main-images .product-main-image.selected noscript")
+            .text()
+            ?.trim()
+        )
+          ?.filter("img")
+          ?.attr("src") ||
+        jQuery(".product-main-images .product-main-image.selected .zoomImg").attr(
+          "src"
+        ) ||
+        jQuery(".product-main-images .product-main-image img:first").attr("src") ||
+        jQuery('meta[property="og:image:secure_url"]').attr("content") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (jQuery(".product-main-images .product-main-image").length > 0) {
+        $arr = [];
+        jQuery(".product-main-images .product-main-image").each(function (index) {
+          $img =
+            jQuery(jQuery(this).find("noscript").text()?.trim())
+              ?.filter("img")
+              ?.attr("src") ||
+            jQuery(this).find(".zoomImg").attr("src") ||
+            jQuery(this).find("img[src]:first").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }
+          `,
+      productPrice: `
+      $pr = jQuery("#product-price .product-price").text().trim();
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+      $pr = $cr
+        ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+        : $pr;
+          `,
+      productOriginalPrice: `
+      $pr =
+        jQuery("#product-price .was").text().trim() ||
+        jQuery("#product-price .product-old-price").text().trim() ||
+        jQuery("#product-price .product-price").text().trim();
+      $cr = jQuery('meta[property="og:price:currency"]').attr("content");
+      $pr = $cr
+        ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+        : $pr;
+          `,
+      stockStatus: `
+      jQuery(".product-add-to-cart input#AddToCart").is(":disabled") ||
+        jQuery("body.404:visible").length > 0;
           `,
     },
   },

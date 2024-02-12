@@ -131,7 +131,7 @@ export const styles = `
 #rulesHelperCustomButton.custom-button {
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 8px;
   min-height: var(--rules-helper__btn-min-height);
   align-items: center;
   white-space: nowrap;
