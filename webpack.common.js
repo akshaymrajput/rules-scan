@@ -1,4 +1,5 @@
 const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -53,6 +54,7 @@ module.exports = {
     path: path.resolve("dist"),
   },
   optimization: {
+    minimizer: [new TerserPlugin({ extractComments: false })],
     splitChunks: {
       chunks(chunk) {
         return chunk.name !== "contentScript" && chunk.name !== "background";
