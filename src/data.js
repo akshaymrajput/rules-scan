@@ -2720,6 +2720,87 @@ module.exports = [
   },
   {
     conditions: {
+      titleElement: ["h1.product-details-product-title"],
+      galleryItems: [
+        '.product-images-container .product-single__media--selected[data-media-type="image"] img',
+      ],
+      priceElements: ["#ProductPrice .money", "#ProductPrice"],
+      addButton: ["#AddToCart"],
+    },
+    data: {
+      productTitle: `
+      jQuery("h1.product-details-product-title:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery(
+          '.product-images-container .product-single__media--selected[data-media-type="image"] img[data-image-zoom]'
+        ).attr("data-image-zoom") ||
+        jQuery(
+          '.product-images-container .product-single__media--selected[data-media-type="image"] img'
+        ).attr("src") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (
+        jQuery(
+          '.product-images-container .product-single__media[data-media-type="image"]'
+        ).length > 0
+      ) {
+        $arr = [];
+        jQuery(
+          '.product-images-container .product-single__media[data-media-type="image"]'
+        ).each(function (index) {
+          $img =
+            jQuery(this).find("img[data-image-zoom]").attr("data-image-zoom") ||
+            jQuery(this).find("img[data-srcset]").attr("data-srcset") ||
+            jQuery(this).find("img:first").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }
+          `,
+      productPrice: `
+      $cr = jQuery('meta[itemprop="priceCurrency"]').attr("content");
+      $pr =
+        jQuery("#ProductPrice .money").text().trim() ||
+        jQuery("#ProductPrice").attr("content");
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      productOriginalPrice: `
+      $cr = jQuery('meta[itemprop="priceCurrency"]').attr("content");
+      $pr =
+        jQuery("#ComparePrice:visible .money").text().trim() ||
+        jQuery("#ComparePrice:visible").attr("content") ||
+        jQuery("#ProductPrice .money").text().trim() ||
+        jQuery("#ProductPrice").attr("content");
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      stockStatus: `
+      jQuery(".template-404:visible").length > 0 ||
+      jQuery("#AddToCart").is(":disabled") ||
+      jQuery('.product-details-wrapper [itemprop="availability"][href*="Out"]')
+        .length > 0;
+          `,
+    },
+  },
+  {
+    conditions: {
       titleElement: ['h1[class*="product__title"]'],
       galleryItems: [
         "[data-product-single-media-group] [data-main-media] [data-main-slide].is-selected [data-master]",
@@ -6682,7 +6763,7 @@ module.exports = [
       stockStatus: `
       jQuery(".template-404:visible").length > 0 ||
         jQuery('.product-prices link[itemprop="availability"][href*="Out"]').length >
-        0;
+        0 || jQuery(".product-add-to-cart button.add-to-cart").is(':disabled');
           `,
     },
   },

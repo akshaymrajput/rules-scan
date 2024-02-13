@@ -1263,69 +1263,348 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [
+        ".product fieldset.variant-picker__option:has(legend):visible",
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `legend:first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+        ).length > 0
+      ) {
+        [
+          jQuery(
+            ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch.is-selected"
+          ).length > 0
+            ? jQuery(
+                ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch.is-selected"
+              )
+                .text()
+                .trim()
+            : jQuery(
+                ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values input:checked"
+              ).length > 0
+            ? jQuery(
+                ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values input:checked"
+              )
+                .next(".block-swatch")
+                .text()
+                ?.trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(
+              ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+            ).map(function (i, e) {
+              return jQuery(e).text().trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];    
+      `,
+      propSetter: `
+      if (
+        jQuery(
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+        ).each(function () {
+          if (jQuery(this).val().trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });              
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+        ).each(function () {
+          if (
+            jQuery(this).val().trim() == $sarg &&
+            (jQuery(this).is(":disabled") || jQuery(this).hasClass("disabled"))
+          ) {
+            $val = true;
+          }
+        });
+      }
+      $val;
+      `,
+    },
+  },
+  {
+    conditions: {
+      propertySelector: [
+        '.product-form__option-selector:has(.product-form__option-info:has(.product-form__option-name) + [class*="swatch-list"])',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `.product-form__option-info:has(+ [class*="swatch-list"]) .product-form__option-name:first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0
+      ) {
+        [
+          jQuery(".product-form__option-name:contains(REPLACE_ME)")
+            .parent()
+            .siblings('[class*="swatch-list"]')
+            .find("input:checked").length > 0
+            ? jQuery(".product-form__option-name:contains(REPLACE_ME)")
+                .parent()
+                .siblings('[class*="swatch-list"]')
+                .find("input:checked")
+                .val()
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(".product-form__option-name:contains(REPLACE_ME)")
+              .parent()
+              .siblings('[class*="swatch-list"]')
+              .find("input")
+              .map(function (i, e) {
+                return jQuery(e).val().trim();
+              })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input")
+          .each(function () {
+            if (jQuery(this).val().trim() == $sarg) jQuery(this)[0].click();
+          });
+      }
+      wait_for(function () {
+        return true;
+      });        
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input")
+          .each(function () {
+            if (
+              jQuery(this).val().trim() == $sarg &&
+              !jQuery(this).parent().is("[class$=disabled]")
+            ) {
+              $val = false;
+            }
+          });
+      }
+      $val; 
+      `,
+    },
+  },
+  {
+    conditions: {
+      propertySelector: [
+        ".product-single__meta .radio-wrapper:has(label + select:visible)",
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `label:has(+ select:visible):first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(
+          '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+        ).length > 0
+      ) {
+        [
+          jQuery(
+            '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option:selected'
+          ).length > 0
+            ? jQuery(
+                '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option:selected'
+              )
+                .text()
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(
+              '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+            ).map(function (i, e) {
+              return jQuery(e).text().trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(
+          '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+        ).each(function () {
+          if (jQuery(this).text().trim() == $sarg) {
+            jQuery(this).parent().val(jQuery(this).text()).change();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });          
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(
+          '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          '.product-single__meta .radio-wrapper label:contains(REPLACE_ME) + select:visible option'
+        ).each(function () {
+          if (jQuery(this).text().trim() == $sarg && jQuery(this).is(":disabled")) {
+            $val = true;
+          }
+        });
+      }
+      $val;   
+      `,
+    },
+  },
 ];
 
 /*
+
 if (
-  jQuery(
-    '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-  ).length > 0
+  jQuery(".product-form__option-name:contains(REPLACE_ME)")
+    .parent()
+    .siblings('[class*="swatch-list"]')
+    .find("input").length > 0
 ) {
   [
-    jQuery(
-      '.product-option-select label:contains(REPLACE_ME) + select:visible option:selected'
-    ).length > 0
-      ? jQuery(
-          '.product-option-select label:contains(REPLACE_ME) + select:visible option:selected'
-        )
+    jQuery(".product-form__option-name:contains(REPLACE_ME)")
+      .parent()
+      .siblings('[class*="swatch-list"]')
+      .find("input:checked").length > 0
+      ? jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .parent()
+          .siblings('[class*="swatch-list"]')
+          .find("input:checked")
           .val()
           .trim()
       : "Select REPLACE_ME",
     jQuery.makeArray(
-      jQuery(
-        '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-      ).map(function (i, e) {
-        return jQuery(e).val().trim();
-      })
+      jQuery(".product-form__option-name:contains(REPLACE_ME)")
+        .parent()
+        .siblings('[class*="swatch-list"]')
+        .find("input")
+        .map(function (i, e) {
+          return jQuery(e).val().trim();
+        })
     ),
   ];
 } else ["No REPLACE_ME", ["No REPLACE_ME"]];
 
+// $sarg = 'iPhone 13'
 if (
-  jQuery(
-    '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-  ).length > 0 &&
+  jQuery(".product-form__option-name:contains(REPLACE_ME)")
+    .parent()
+    .siblings('[class*="swatch-list"]')
+    .find("input").length > 0 &&
   $sarg != "Select REPLACE_ME" &&
   $sarg != "No REPLACE_ME"
 ) {
-  jQuery(
-    '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-  ).each(function () {
-    if (jQuery(this).val().trim() == $sarg) {
-      jQuery(this).parent().val(jQuery(this).val()).change();
-    }
-  });
+  jQuery(".product-form__option-name:contains(REPLACE_ME)")
+    .parent()
+    .siblings('[class*="swatch-list"]')
+    .find("input")
+    .each(function () {
+      if (jQuery(this).val().trim() == $sarg) jQuery(this)[0].click();
+    });
 }
 wait_for(function () {
   return true;
 });
 
+// $sarg = 'TT'
 $val = false;
 if (
-  jQuery(
-    '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-  ).length > 0 &&
-  $sarg != "Select REPLACE_ME" &&
-  $sarg != "No REPLACE_ME"
+  jQuery(".product-form__option-name:contains(REPLACE_ME)")
+    .parent()
+    .siblings('[class*="swatch-list"]')
+    .find("input").length > 0 &&
+  $sarg != "No REPLACE_ME" &&
+  $sarg != "Select REPLACE_ME"
 ) {
-  jQuery(
-    '.product-option-select label:contains(REPLACE_ME) + select:visible option'
-  ).each(function () {
-    if (jQuery(this).val().trim() == $sarg && jQuery(this).is(":disabled")) {
-      $val = true;
-    }
-  });
+  $val = true;
+  jQuery(".product-form__option-name:contains(REPLACE_ME)")
+    .parent()
+    .siblings('[class*="swatch-list"]')
+    .find("input")
+    .each(function () {
+      if (
+        jQuery(this).val().trim() == $sarg &&
+        !jQuery(this).parent().is("[class$=disabled]")
+      ) {
+        $val = false;
+      }
+    });
 }
 $val;
+
 
 */
