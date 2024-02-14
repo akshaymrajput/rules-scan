@@ -1449,6 +1449,91 @@ module.exports = [
   {
     conditions: {
       propertySelector: [
+        '.product-form__option:has(.product-form__option-name + [class*="swatch-list"])',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `.product-form__option-name:first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0
+      ) {
+        [
+          jQuery(".product-form__option-name:contains(REPLACE_ME)")
+            .siblings('[class*="swatch-list"]')
+            .find("input:checked").length > 0
+            ? jQuery(".product-form__option-name:contains(REPLACE_ME)")
+                
+                .siblings('[class*="swatch-list"]')
+                .find("input:checked")
+                .val()
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(".product-form__option-name:contains(REPLACE_ME)")
+              .siblings('[class*="swatch-list"]')
+              .find("input")
+              .map(function (i, e) {
+                return jQuery(e).val().trim();
+              })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .siblings('[class*="swatch-list"]')
+          .find("input")
+          .each(function () {
+            if (jQuery(this).val().trim() == $sarg) jQuery(this)[0].click();
+          });
+      }
+      wait_for(function () {
+        return true;
+      });        
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .siblings('[class*="swatch-list"]')
+          .find("input").length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery(".product-form__option-name:contains(REPLACE_ME)")
+          .siblings('[class*="swatch-list"]')
+          .find("input")
+          .each(function () {
+            if (
+              jQuery(this).val().trim() == $sarg &&
+              !jQuery(this).parent().is("[class$=disabled]")
+            ) {
+              $val = false;
+            }
+          });
+      }
+      $val; 
+      `,
+    },
+  },
+  {
+    conditions: {
+      propertySelector: [
         ".product-single__meta .radio-wrapper:has(label + select:visible)",
       ],
     },
@@ -1525,84 +1610,151 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [".product-detail [data-attr]:visible"],
+    },
+    data: {
+      propDetails: {
+        name: ``,
+        attr: `data-attr`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (
+        jQuery(
+          '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+        ).length > 0
+      ) {
+        [
+          jQuery(
+            '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value].selected'
+          ).length > 0
+            ? jQuery(
+                '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value].selected'
+              )
+                .attr("data-attr-value")
+                ?.trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(
+              '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+            ).map(function (i, e) {
+              return jQuery(e).attr("data-attr-value")?.trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];      
+      `,
+      propSetter: `
+      if (
+        jQuery(
+          '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+        ).each(function () {
+          if (jQuery(this).attr("data-attr-value")?.trim() == $sarg)
+            jQuery(this)[0]?.click();
+        });
+      }
+      wait_for(function () {
+        return true;
+      });        
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(
+          '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+        ).length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        jQuery(
+          '.product-detail [data-attr="REPLACE_ME"]:visible button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+        ).each(function () {
+          if (
+            jQuery(this).attr("data-attr-value")?.trim() == $sarg &&
+            (jQuery(this).hasClass("unselectable") || jQuery(this).is(":disabled"))
+          ) {
+            $val = true;
+          }
+        });
+      }
+      $val;        
+      `,
+    },
+  },
 ];
 
 /*
 
 if (
-  jQuery(".product-form__option-name:contains(REPLACE_ME)")
-    .parent()
-    .siblings('[class*="swatch-list"]')
-    .find("input").length > 0
+  jQuery(
+    '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+  ).length > 0
 ) {
   [
-    jQuery(".product-form__option-name:contains(REPLACE_ME)")
-      .parent()
-      .siblings('[class*="swatch-list"]')
-      .find("input:checked").length > 0
-      ? jQuery(".product-form__option-name:contains(REPLACE_ME)")
-          .parent()
-          .siblings('[class*="swatch-list"]')
-          .find("input:checked")
-          .val()
-          .trim()
-      : "Select REPLACE_ME",
+    jQuery(
+      '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value].selected'
+    ).length > 0
+      ? jQuery(
+          '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value].selected'
+        )
+          .attr("data-attr-value")
+          ?.trim()
+      : "Select Color",
     jQuery.makeArray(
-      jQuery(".product-form__option-name:contains(REPLACE_ME)")
-        .parent()
-        .siblings('[class*="swatch-list"]')
-        .find("input")
-        .map(function (i, e) {
-          return jQuery(e).val().trim();
-        })
+      jQuery(
+        '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+      ).map(function (i, e) {
+        return jQuery(e).attr("data-attr-value")?.trim();
+      })
     ),
   ];
-} else ["No REPLACE_ME", ["No REPLACE_ME"]];
+} else ["No Color", ["No Color"]];
 
-// $sarg = 'iPhone 13'
 if (
-  jQuery(".product-form__option-name:contains(REPLACE_ME)")
-    .parent()
-    .siblings('[class*="swatch-list"]')
-    .find("input").length > 0 &&
-  $sarg != "Select REPLACE_ME" &&
-  $sarg != "No REPLACE_ME"
+  jQuery(
+    '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+  ).length > 0 &&
+  $sarg != "Select Color" &&
+  $sarg != "No Color"
 ) {
-  jQuery(".product-form__option-name:contains(REPLACE_ME)")
-    .parent()
-    .siblings('[class*="swatch-list"]')
-    .find("input")
-    .each(function () {
-      if (jQuery(this).val().trim() == $sarg) jQuery(this)[0].click();
-    });
+  jQuery(
+    '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+  ).each(function () {
+    if (jQuery(this).attr("data-attr-value")?.trim() == $sarg)
+      jQuery(this)[0]?.click();
+  });
 }
 wait_for(function () {
   return true;
 });
 
-// $sarg = 'TT'
+// // $sarg = 'Larges'
 $val = false;
 if (
-  jQuery(".product-form__option-name:contains(REPLACE_ME)")
-    .parent()
-    .siblings('[class*="swatch-list"]')
-    .find("input").length > 0 &&
-  $sarg != "No REPLACE_ME" &&
-  $sarg != "Select REPLACE_ME"
+  jQuery(
+    '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+  ).length > 0 &&
+  $sarg != "No Color" &&
+  $sarg != "Select Color"
 ) {
-  $val = true;
-  jQuery(".product-form__option-name:contains(REPLACE_ME)")
-    .parent()
-    .siblings('[class*="swatch-list"]')
-    .find("input")
-    .each(function () {
-      if (
-        jQuery(this).val().trim() == $sarg &&
-        !jQuery(this).parent().is("[class$=disabled]")
-      ) {
-        $val = false;
-      }
-    });
+  jQuery(
+    '.product-detail [data-attr="REPLACE_ME"] button[class*="-attribute"] span[class*="-value"][data-attr-value]'
+  ).each(function () {
+    if (
+      jQuery(this).attr("data-attr-value")?.trim() == $sarg &&
+      (jQuery(this).hasClass("unselectable") || jQuery(this).is(":disabled"))
+    ) {
+      $val = true;
+    }
+  });
 }
 $val;
 

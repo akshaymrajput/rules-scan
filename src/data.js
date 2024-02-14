@@ -7052,6 +7052,7 @@ module.exports = [
       galleryItems: [
         ".product-single__photos .product__photo.slick-active img",
         ".product-single__photos .product__slide:not(.media--hidden) .product__photo:first img",
+        ".product-single__photos .product__photo.media--hidden:first img",
       ],
       priceElements: [
         ".product__page [data-price-wrapper] [data-product-price]",
@@ -7075,6 +7076,9 @@ module.exports = [
       ).attr("data-src") ||
       jQuery(
         ".product-single__photos .product__photo.slick-active img[src]:first"
+      ).attr("src") ||
+      jQuery(
+        ".product-single__photos .product__photo img[src]:first"
       ).attr("src") ||
       jQuery('meta[property="og:image"]').attr("content");
     if ($img) {
@@ -7295,6 +7299,84 @@ module.exports = [
       stockStatus: `
       jQuery(".template-404:visible").length > 0 ||
         jQuery("button#AddToCart-product-template").is(":disabled");
+          `,
+    },
+  },
+  {
+    conditions: {
+      titleElement: ["h1.product-title:first"],
+      galleryItems: [
+        ".product-main-slide .swiper-slide.swiper-slide-active img",
+      ],
+      priceElements: [".product-price .price:first"],
+      addButton: [".product-summary button.add-to-cart-button"],
+    },
+    data: {
+      productTitle: `
+      jQuery("h1.product-title:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery(
+          ".product-main-slide .swiper-slide.swiper-slide-active [data-zoom]"
+        ).attr("data-zoom") ||
+        jQuery(".product-main-slide .swiper-slide.swiper-slide-active img[src]").attr(
+          "src"
+        ) ||
+        jQuery('meta[property="og:image:secure_url"]').attr("content") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (jQuery(".product-main-slide .swiper-slide").length > 0) {
+        $arr = [];
+        jQuery(".product-main-slide .swiper-slide").each(function (index) {
+          $img =
+            jQuery(this).find("[data-zoom]").attr("data-zoom") ||
+            jQuery(this).find("img[src]").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }      
+          `,
+      productPrice: `
+      $cr =
+        jQuery('meta[property="product:price:currency"]').attr("content") ||
+        jQuery('meta[property="og:price:currency"]').attr("content");
+      
+      $pr = jQuery(".product-price .price:first").text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      productOriginalPrice: `
+      $cr =
+        jQuery('meta[property="product:price:currency"]').attr("content") ||
+        jQuery('meta[property="og:price:currency"]').attr("content");
+      
+      $pr =
+        jQuery(".product-price s.regular-price:first").text().trim() ||
+        jQuery(".product-price .price:first").text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      stockStatus: `
+      jQuery(".product-summary button.add-to-cart-button").is(":disabled") ||
+        jQuery(".product-summary button.add-to-cart-button")
+          .closest("form.product-buy")
+          .hasClass("disabled") ||
+        jQuery(".template-404:visible").length > 0;
           `,
     },
   },
