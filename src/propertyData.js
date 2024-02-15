@@ -424,6 +424,90 @@ module.exports = [
   {
     conditions: {
       propertySelector: [
+        '.product .option-selector__btns:has(input[name$="-option"])',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `input[name$="-option"]:first`,
+        attr: `name`,
+        complexity: complexityType.SPECIAL.Pattern_B,
+      },
+      propGetter: `
+      if (
+        jQuery(
+          '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+        ).length > 0
+      ) {
+        [
+          jQuery(
+            '.product .option-selector__btns input[name$="REPLACE_ME-option"]:checked'
+          ).length > 0
+            ? jQuery(
+                '.product .option-selector__btns input[name$="REPLACE_ME-option"]:checked'
+              )
+                .val()
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(
+              '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+            ).map(function (i, e) {
+              return jQuery(e).val().trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(
+          '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+        ).each(function () {
+          if (jQuery(this).val().trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(
+          '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+        ).length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(
+          '.product .option-selector__btns input[name$="REPLACE_ME-option"]'
+        ).each(function () {
+          if (
+            jQuery(this).val().trim() == $sarg &&
+            (jQuery(this).is(":disabled") ||
+              jQuery(this).hasClass("unavailable") ||
+              jQuery(this).hasClass("disabled"))
+          ) {
+            $val = true;
+          }
+        });
+      }
+      $val;      
+      `,
+    },
+  },
+  {
+    conditions: {
+      propertySelector: [
         ".product-details .swatches [option-name]:has(.swatch-button)",
       ],
     },
@@ -1278,15 +1362,15 @@ module.exports = [
       propGetter: `
       if (
         jQuery(
-          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).length > 0
       ) {
         [
           jQuery(
-            ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch.is-selected"
+            ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch].is-selected"
           ).length > 0
             ? jQuery(
-                ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch.is-selected"
+                ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch].is-selected"
               )
                 .text()
                 .trim()
@@ -1296,13 +1380,13 @@ module.exports = [
             ? jQuery(
                 ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values input:checked"
               )
-                .next(".block-swatch")
+                .next("[data-option-value][class*=swatch]")
                 .text()
                 ?.trim()
             : "Select REPLACE_ME",
           jQuery.makeArray(
             jQuery(
-              ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+              ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
             ).map(function (i, e) {
               return jQuery(e).text().trim();
             })
@@ -1313,13 +1397,13 @@ module.exports = [
       propSetter: `
       if (
         jQuery(
-          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).length > 0 &&
         $sarg != "Select REPLACE_ME" &&
         $sarg != "No REPLACE_ME"
       ) {
         jQuery(
-          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).each(function () {
           if (jQuery(this).val().trim() == $sarg) {
             jQuery(this)[0]?.click();
@@ -1334,13 +1418,13 @@ module.exports = [
       $val = false;
       if (
         jQuery(
-          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).length > 0 &&
         $sarg != "Select REPLACE_ME" &&
         $sarg != "No REPLACE_ME"
       ) {
         jQuery(
-          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values .block-swatch"
+          ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).each(function () {
           if (
             jQuery(this).val().trim() == $sarg &&
