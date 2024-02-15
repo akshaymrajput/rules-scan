@@ -1405,7 +1405,7 @@ module.exports = [
         jQuery(
           ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).each(function () {
-          if (jQuery(this).val().trim() == $sarg) {
+          if (jQuery(this).text().trim() == $sarg) {
             jQuery(this)[0]?.click();
           }
         });
@@ -1427,8 +1427,8 @@ module.exports = [
           ".product fieldset.variant-picker__option:has(legend:contains(REPLACE_ME)) .variant-picker__option-values [data-option-value][class*=swatch]"
         ).each(function () {
           if (
-            jQuery(this).val().trim() == $sarg &&
-            (jQuery(this).is(":disabled") || jQuery(this).hasClass("disabled"))
+            jQuery(this).text().trim() == $sarg &&
+            (jQuery(this).is(":disabled") || jQuery(this).hasClass("disabled") || jQuery(this).hasClass("is-disabled"))
           ) {
             $val = true;
           }
