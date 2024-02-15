@@ -5,6 +5,7 @@ import {
   getAnythingBetweenSquareBrackets,
   getNameUsingPatternA,
   getNameUsingPatternB,
+  getNameUsingPatternC,
 } from "./utils";
 
 const REPLACE_ME = "REPLACE_ME";
@@ -16,10 +17,19 @@ const getPropName = (propSelector, propDetails) => {
   for (let property of properties) {
     let name;
     let firstResult =
-      propDetails.attr == "text" ? (jQuery(property).find(propDetails.name).clone().children().remove().end().text()?.replace(':','')?.trim() || jQuery(property).find(propDetails.name).text().trim()) :
-        jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
-        jQuery(property).attr(propDetails.attr) ||
-        jQuery(property).find(propDetails.name).text().trim();
+      propDetails.attr == "text"
+        ? jQuery(property)
+            .find(propDetails.name)
+            .clone()
+            .children()
+            .remove()
+            .end()
+            .text()
+            ?.replace(":", "")
+            ?.trim() || jQuery(property).find(propDetails.name).text().trim()
+        : jQuery(property).find(propDetails.name).attr(propDetails.attr) ||
+          jQuery(property).attr(propDetails.attr) ||
+          jQuery(property).find(propDetails.name).text().trim();
 
     switch (propDetails.complexity) {
       case complexityType.SIMPLE:
@@ -33,6 +43,9 @@ const getPropName = (propSelector, propDetails) => {
         break;
       case complexityType.SPECIAL.Pattern_B:
         name = getNameUsingPatternB(firstResult);
+        break;
+      case complexityType.SPECIAL.Pattern_C:
+        name = getNameUsingPatternC(firstResult);
         break;
       default:
         name = firstResult;

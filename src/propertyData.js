@@ -1836,30 +1836,171 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [
+        '.Product [id*="product-template-"]:has( > .Popover__Content):visible',
+      ],
+    },
+    data: {
+      propDetails: {
+        name: ``,
+        attr: `id`,
+        complexity: complexityType.SPECIAL.Pattern_C,
+      },
+      propGetter: `
+      if (
+        jQuery("[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value")
+          .length > 0
+      ) {
+        [
+          jQuery(
+            "[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value.is-selected"
+          ).length > 0
+            ? jQuery(
+                "[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value.is-selected"
+              )
+                .text()
+                .trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(
+              "[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value"
+            ).map(function (i, e) {
+              {
+                return jQuery(e).text().trim();
+              }
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery("[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value")
+          .length > 0 &&
+        ($sarg != "Choose REPLACE_ME") & ($sarg != "No REPLACE_ME")
+      ) {
+        jQuery(
+          "[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value"
+        ).each(function (i, e) {
+          if (jQuery(this).text().trim() == $sarg) {
+            jQuery(this)[0].click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });      
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery("[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value")
+          .length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery(
+          "[id*='product-template-REPLACE_ME'] > .Popover__Content .Popover__Value"
+        ).each(function () {
+          if (jQuery(this).text().trim() == $sarg && !jQuery(this).attr("disabled")) {
+            $val = false;
+          }
+        });
+      }
+      $val;           
+      `,
+    },
+  },
+  {
+    conditions: {
+      propertySelector: [
+        ".Product:has(.ProductForm__Label + [class*=SwatchList]:has(input))",
+      ],
+    },
+    data: {
+      propDetails: {
+        name: `.ProductForm__Label:has(+ [class*=SwatchList]:has(input)):first`,
+        attr: `text`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0) {
+        [
+          jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").length > 0
+            ? jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").val().trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").map(function (i, e) {
+              return jQuery(e).val().trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]];
+      `,
+      propSetter: `
+      if (
+        jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function () {
+          if (jQuery(this).val().trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });      
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
+        $sarg != "No REPLACE_ME" &&
+        $sarg != "Select REPLACE_ME"
+      ) {
+        $val = true;
+        jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function (index) {
+          if (
+            jQuery(this).val().trim() == $sarg &&
+            !jQuery(this).siblings().hasClass("unavailable")
+          ) {
+            $val = false;
+          }
+        });
+      }
+      $val;          
+      `,
+    },
+  },
 ];
 
 /*
 
-if (jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').length > 0) {
+if (jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0) {
   [
-    jQuery('.swatch .swatch-element input[name="REPLACE_ME"]:checked').length > 0
-      ? jQuery('.swatch .swatch-element input[name="REPLACE_ME"]:checked').val()
+    jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").length > 0
+      ? jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").val().trim()
       : "Select REPLACE_ME",
     jQuery.makeArray(
-      jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').map(function (i, e) {
-        return jQuery(e).val();
+      jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").map(function (i, e) {
+        return jQuery(e).val().trim();
       })
     ),
   ];
 } else ["No REPLACE_ME", ["No REPLACE_ME"]];
 
-// $sarg = 'Small'
+// $sarg = 'X-Large'
 if (
-  jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').length > 0 &&
-  $sarg != "Choose REPLACE_ME" &&
+  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
+  $sarg != "Select REPLACE_ME" &&
   $sarg != "No REPLACE_ME"
 ) {
-  jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').each(function (i, e) {
+  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function () {
     if (jQuery(this).val().trim() == $sarg) {
       jQuery(this)[0]?.click();
     }
@@ -1869,25 +2010,24 @@ wait_for(function () {
   return true;
 });
 
-// $sarg = '8'
+// $sarg = '2'
 $val = false;
 if (
-  jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').length > 0 &&
+  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
   $sarg != "No REPLACE_ME" &&
   $sarg != "Select REPLACE_ME"
 ) {
   $val = true;
-  jQuery('.swatch .swatch-element input[name="REPLACE_ME"]').each(function () {
+  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function (index) {
     if (
       jQuery(this).val().trim() == $sarg &&
-      jQuery(this).parent().hasClass("soldout")
+      !jQuery(this).siblings().hasClass("unavailable")
     ) {
       $val = false;
     }
   });
 }
 $val;
-
 
 
 */

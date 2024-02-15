@@ -4,6 +4,7 @@ const complexityType = Object.freeze({
   SPECIAL: {
     Pattern_A: Symbol("prop name starts with name__"),
     Pattern_B: Symbol("ending with -selector"),
+    Pattern_C: Symbol("last word where everything split by -"),
   },
 });
 
@@ -21,6 +22,14 @@ const getNameUsingPatternB = (string) => {
     return string;
   }
   return match ? match[0] : null;
+};
+
+const getNameUsingPatternC = (string) => {
+  const match = string.split("-").pop();
+  if (!match) {
+    return string;
+  }
+  return match ? match : null;
 };
 
 const getAnythingBetweenSquareBrackets = (string) => {
@@ -70,4 +79,5 @@ module.exports = {
   getAnythingBetweenSquareBrackets,
   getNameUsingPatternA,
   getNameUsingPatternB,
+  getNameUsingPatternC,
 };
