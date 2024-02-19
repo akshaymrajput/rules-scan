@@ -1977,30 +1977,91 @@ module.exports = [
       `,
     },
   },
+  {
+    conditions: {
+      propertySelector: [
+        ".product-form-snippet .variant-option[data-variant-option]:has(.variant-option__option)",
+      ],
+    },
+    data: {
+      propDetails: {
+        name: ``,
+        attr: `data-variant-option`,
+        complexity: complexityType.SIMPLE,
+      },
+      propGetter: `
+      if (jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0) {
+        [
+          jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input:checked').length > 0
+            ? jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input:checked').val().trim()
+            : "Select REPLACE_ME",
+          jQuery.makeArray(
+            jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').map(function (i, e) {
+              return jQuery(e).val().trim();
+            })
+          ),
+        ];
+      } else ["No REPLACE_ME", ["No REPLACE_ME"]]; 
+      `,
+      propSetter: `
+      if (
+        jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').each(function () {
+          if (jQuery(this).val().trim() == $sarg) {
+            jQuery(this)[0]?.click();
+          }
+        });
+      }
+      wait_for(function () {
+        return true;
+      });    
+      `,
+      propStockGetter: `
+      $val = false;
+      if (
+        jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0 &&
+        $sarg != "Select REPLACE_ME" &&
+        $sarg != "No REPLACE_ME"
+      ) {
+        jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').each(function () {
+          if (
+            jQuery(this).val().trim() == $sarg &&
+            (jQuery(this).is(":disabled") || jQuery(this).parent().hasClass("variant-option__option--oos"))
+          ) {
+            $val = true;
+          }
+        });
+      }
+      $val;               
+      `,
+    },
+  },
 ];
 
 /*
 
-if (jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0) {
+if (jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0) {
   [
-    jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").length > 0
-      ? jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input:checked").val().trim()
+    jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input:checked').length > 0
+      ? jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input:checked').val().trim()
       : "Select REPLACE_ME",
     jQuery.makeArray(
-      jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").map(function (i, e) {
+      jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').map(function (i, e) {
         return jQuery(e).val().trim();
       })
     ),
   ];
 } else ["No REPLACE_ME", ["No REPLACE_ME"]];
 
-// $sarg = 'X-Large'
 if (
-  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
+  jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0 &&
   $sarg != "Select REPLACE_ME" &&
   $sarg != "No REPLACE_ME"
 ) {
-  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function () {
+  jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').each(function () {
     if (jQuery(this).val().trim() == $sarg) {
       jQuery(this)[0]?.click();
     }
@@ -2010,24 +2071,21 @@ wait_for(function () {
   return true;
 });
 
-// $sarg = '2'
 $val = false;
 if (
-  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").length > 0 &&
-  $sarg != "No REPLACE_ME" &&
-  $sarg != "Select REPLACE_ME"
+  jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').length > 0 &&
+  $sarg != "Select REPLACE_ME" &&
+  $sarg != "No REPLACE_ME"
 ) {
-  $val = true;
-  jQuery(".Product .ProductForm__Label:contains(REPLACE_ME) + [class*=SwatchList]:has(input):first input").each(function (index) {
+  jQuery('.product-form-snippet .variant-option[data-variant-option="REPLACE_ME"] .variant-option__option input').each(function () {
     if (
       jQuery(this).val().trim() == $sarg &&
-      !jQuery(this).siblings().hasClass("unavailable")
+      (jQuery(this).is(":disabled") || jQuery(this).parent().hasClass("variant-option__option--oos"))
     ) {
-      $val = false;
+      $val = true;
     }
   });
 }
 $val;
-
 
 */
