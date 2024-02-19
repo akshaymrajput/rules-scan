@@ -7472,4 +7472,87 @@ module.exports = [
           `,
     },
   },
+  {
+    conditions: {
+      titleElement: [".product-title h1:first"],
+      galleryItems: [".product-media-images .swiper-slide img"],
+      priceElements: [".product-details-price-snippet [data-product-price]"],
+      addButton: [".product-details-form-wrapper [data-add-to-cart]"],
+    },
+    data: {
+      productTitle: `
+      jQuery(".product-title h1:first").text().trim();
+          `,
+      mainImage: `
+      $img =
+        jQuery(".product-media-images .swiper-slide.swiper-slide-active img[data-raw-src]").attr(
+          "data-raw-src"
+        ) ||
+        jQuery(".product-media-images .swiper-slide.swiper-slide-active img[src]").attr(
+          "src"
+        ) ||
+        jQuery(".product-media-images .swiper-slide:first img[src]").attr(
+          "src"
+        ) ||
+        jQuery('meta[property="og:image:secure_url"]').attr("content") ||
+        jQuery('meta[property="og:image"]').attr("content");
+      if ($img) {
+        $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+        $img = $img.split("?")[0];
+      }
+          `,
+      itemImages: `
+      if (jQuery(".product-media-images .swiper-slide").length > 0) {
+        $arr = [];
+        jQuery(".product-media-images .swiper-slide").each(function (index) {
+          $img =
+            jQuery(this).find("[data-raw-src]").attr("data-raw-src") ||
+            jQuery(this).find("img").attr("src");
+          if ($img) {
+            $img = $img.indexOf("http") == -1 ? "https:" + $img : $img;
+            $img = $img.split("?")[0];
+          }
+      
+          if (index < 4) $arr.push($img);
+        });
+        $arr;
+      }        
+          `,
+      productPrice: `
+      $cr =
+        jQuery('meta[property="product:price:currency"]').attr("content") ||
+        jQuery('meta[property="og:price:currency"]').attr("content");
+      
+      $pr = jQuery(".product-details-price-snippet [data-product-price]")
+        .text()
+        .trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      productOriginalPrice: `
+      $cr =
+        jQuery('meta[property="product:price:currency"]').attr("content") ||
+        jQuery('meta[property="og:price:currency"]').attr("content");
+      
+      $pr =
+        jQuery(".product-details-price-snippet [data-product-compare-at-price]")
+          .text()
+          .trim() ||
+        jQuery(".product-details-price-snippet [data-product-price]").text().trim();
+      $pr =
+        $cr && $pr
+          ? $cr + $pr.replace(/[^,.\\d]/g, "").replace(/^[,.]+|[,.]+$/g, "")
+          : $pr;
+          `,
+      stockStatus: `
+      jQuery(".product-details-form-wrapper [data-add-to-cart]").is(":disabled") ||
+        jQuery(
+          ".product-details-form-wrapper [data-variant-stock-display-out-of-stock]"
+        ).is(":visible") ||
+        jQuery("#404-not-found").length > 0;
+          `,
+    },
+  },
 ];
